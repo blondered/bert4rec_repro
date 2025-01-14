@@ -1,6 +1,46 @@
+## Installation and experiments 
+
+```
+mkdir aprec_repro
+cd aprec_repro
+```
+
+```
+git clone git@github.com:asash/b4rvae.git b4rvae
+```
+
+```
+git clone git@github.com:asash/bert4rec_repro.git aprec
+```
+
+```
+cd aprec
 python3.10 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt (update rectools there) (pip install -e ./../RecTools )
+pip install -r requirements.txt 
+```
+
+(TODO: update rectools version in requirements.txt) 
+Alternaively clone RecTools and run:
+```
+pip install -e ./../RecTools
+```
+
+Run experiments:
+
+```
+cd aprec/evaluation
+```
+
+```
+sh run_n_experiments.sh configs/ML1M-bpr-example.py
+```
+OR without requiring commits:
+
+```
+CHECK_COMMIT_STATUS=false sh run_n_experiments.sh configs/ML1M-bpr-example.py
+```
+
 
 ### This is a joint code repository for two papers published at 16th ACM Conference on Recommender Systems 
 (Seattle, WA, USA, 18th-23rd September 2022)

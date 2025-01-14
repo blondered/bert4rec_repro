@@ -1,4 +1,4 @@
-# rectools[torch]==0.9.0
+# rectools[torch,lightfm]==0.9.0
 # torch==2.2.2
 # pytorch-lightning==2.4.0
 # rectools-lightfm==1.17.3
