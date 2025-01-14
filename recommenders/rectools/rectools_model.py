@@ -52,13 +52,27 @@ class RectoolsRecommender(Recommender):
     # recommendation_request: tuple(user_id, features)
     def recommend_batch(self, recommendation_requests, limit):
         user_ids = [request[0] for request in recommendation_requests]
-        user_ids = np.array(list(set(user_ids)))
+        user_ids_unique = np.array(list(set(user_ids)))
         reco = self.model.recommend(
-            users=user_ids,
+            users=user_ids_unique,
             dataset=self.dataset,
             filter_viewed=self.filter_seen,
             k=limit
         )
         reco["rec_tuple"] = tuple(zip(reco["item_id"], reco["score"]))
-        res = reco.groupby("user_id")["rec_tuple"].apply(list)
-        return list(res.values)
+        grouped_reco = reco.groupby("user_id")["rec_tuple"].apply(list)
+        sorted_reco = pd.DataFrame({"user_id": user_ids})
+        sorted_reco = sorted_reco.merge(grouped_reco, how="left", on="user_id")
+        res = [el if isinstance(el, list) else [] for el in list(sorted_reco["rec_tuple"].values)]
+        return res
+
+    # this works but too slow
+    # cold users are not handled (should raise but no tested)
+    # def recommend(self, user_id_external, limit, features=None):
+    #     user_reco = self.model.recommend(
+    #         users=[user_id_external],
+    #         dataset=self.dataset,
+    #         filter_viewed=self.filter_seen,
+    #         k=limit
+    #     )
+    #     return tuple(zip(user_reco["item_id"].values, user_reco["score"].values))
