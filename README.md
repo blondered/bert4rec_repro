@@ -1,3 +1,7 @@
+python3.10 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt (update rectools there) (pip install -e ./../RecTools )
+
 ### This is a joint code repository for two papers published at 16th ACM Conference on Recommender Systems 
 (Seattle, WA, USA, 18th-23rd September 2022)
 
