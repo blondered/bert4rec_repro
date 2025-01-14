@@ -5,14 +5,16 @@ import json
 import mmh3
 from pathlib import Path
 
+
+root_directory = Path(__file__).parents[2].resolve()
+sys.path.append(str(root_directory))
+
 from aprec.utils.os_utils import shell
 from aprec.evaluation.evaluate_recommender import RecommendersEvaluator
 from aprec.datasets.datasets_register import DatasetsRegister
 
 # import tensorflow as tf
 
-root_directory = Path(__file__).parents[2].resolve()
-sys.path.append(str(root_directory))
 
 def config():
     """ from https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path"""
