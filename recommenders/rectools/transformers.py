@@ -60,9 +60,12 @@ class RectoolsTransformer(RectoolsRecommender):
         for user_ind, user_id in enumerate(users):
             user_emb = user_embs[user_ind]
             candidates = self.items_ranking_requests[user_ind].item_ids
-            candidate_embs = item_embs[candidates]
+            candidate_indexes, missing = self.model.data_preparator.convert_to_internal(candidates)
+            candidate_embs = item_embs[candidate_indexes]
             scores = candidate_embs @ user_emb
             user_results = [zip(candidates, scores)]
+            missing_results = [(id, float("-inf")) for id in missing]
+            user_results.extend(missing_results)
             user_result.sort(key=lambda x: -x[1])
             result[user_id] = user_result
         return result
