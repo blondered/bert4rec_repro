@@ -35,7 +35,7 @@ USERS_FRACTIONS = [1]
 FILTER_SEEN = True  # TODO: not applied
 RANDOM_STATE = 32
 
-EPOCHS = 1
+EPOCHS = 10
 
 def sasrec_rt():
     return RectoolsSASRec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
@@ -86,11 +86,12 @@ def recbole_bert4rec(epochs=EPOCHS):
     return RecboleBERT4RecRecommender(epochs=epochs)
 
 RECOMMENDERS = {
-    # "sasrec_rt": sasrec_rt,
-    # "bert4rec_rt": bert4rec_rt,
-    # "b4vae_bert4rec": b4rvae_bert4rec,
+    "sasrec_rt": sasrec_rt,
+    "bert4rec_rt": bert4rec_rt,
+    "b4vae_bert4rec": b4rvae_bert4rec,
     # "vanilla_sasrec": vanilla_sasrec,  # tensorflow required, as well as for original bert4rec
-    "recbole_bert4rec": recbole_bert4rec,
+    # "recbole_bert4rec": recbole_bert4rec, # recbole neded, not tested
+    # "our_bert4rec": # tensorflow required
 }
 
 MAX_TEST_USERS=6040
