@@ -1,4 +1,4 @@
-from aprec.recommenders.rectools.rectools_sasrec import RectoolsSASRec
+from aprec.recommenders.rectools.transformers import RectoolsSASRec, RectoolsBERT4Rec
 from aprec.evaluation.metrics.mrr import MRR
 from aprec.evaluation.metrics.ndcg import NDCG
 from aprec.evaluation.split_actions import LeaveOneOut
@@ -16,8 +16,12 @@ EPOCHS = 1
 def sasrec_rt():
     return RectoolsSASRec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
 
+def bert4rec_rt():
+    return RectoolsBERT4Rec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
+
 RECOMMENDERS = {
-    "sasrec_rt": sasrec_rt,
+    # "sasrec_rt": sasrec_rt,
+    "bert4rec_rt": bert4rec_rt,
 }
 
 MAX_TEST_USERS=6040
