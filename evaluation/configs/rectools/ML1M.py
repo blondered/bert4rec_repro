@@ -3,6 +3,7 @@ from aprec.evaluation.metrics.mrr import MRR
 from aprec.evaluation.metrics.ndcg import NDCG
 from aprec.evaluation.split_actions import LeaveOneOut
 from aprec.recommenders.bert4recrepro.b4vae_bert4rec import B4rVaeBert4Rec
+from aprec.recommenders.filter_seen_recommender import FilterSeenRecommender
 import numpy as np
 
 from aprec.evaluation.samplers.pop_sampler import PopTargetItemsSampler
@@ -25,12 +26,13 @@ from aprec.recommenders.bert4recrepro.recbole_bert4rec import RecboleBERT4RecRec
 from aprec.recommenders.bert4recrepro.b4vae_bert4rec import B4rVaeBert4Rec
 from aprec.recommenders.lightfm import LightFMRecommender
 from aprec.recommenders.vanilla_bert4rec import VanillaBERT4Rec
+from aprec.recommenders.bert4recrepro.recbole_bert4rec import RecboleBERT4RecRecommender
 
 
 DATASET = "BERT4rec.ml-1m"
 
 USERS_FRACTIONS = [1]
-FILTER_SEEN = True
+FILTER_SEEN = True  # TODO: not applied
 RANDOM_STATE = 32
 
 EPOCHS = 1
@@ -42,9 +44,9 @@ def bert4rec_rt():
     return RectoolsBERT4Rec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
 
 def b4rvae_bert4rec(epochs=EPOCHS):
-    return B4rVaeBert4Rec(epochs=epochs)
+    return FilterSeenRecommender(B4rVaeBert4Rec(epochs=epochs))
 
-
+# requires tensorflow (NOT CHECKED)
 def dnn(model_arch, loss, sequence_splitter, 
                 val_sequence_splitter=SequenceContinuation, 
                  target_builder=FullMatrixTargetsBuilder,
@@ -80,11 +82,15 @@ vanilla_sasrec  = lambda: dnn(
             metric=BCELoss(),
             )
 
+def recbole_bert4rec(epochs=EPOCHS):
+    return RecboleBERT4RecRecommender(epochs=epochs)
+
 RECOMMENDERS = {
     # "sasrec_rt": sasrec_rt,
     # "bert4rec_rt": bert4rec_rt,
     # "b4vae_bert4rec": b4rvae_bert4rec,
-    "vanilla_sasrec": vanilla_sasrec,
+    # "vanilla_sasrec": vanilla_sasrec,  # tensorflow required, as well as for original bert4rec
+    "recbole_bert4rec": recbole_bert4rec,
 }
 
 MAX_TEST_USERS=6040
