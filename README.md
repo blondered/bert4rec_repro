@@ -1,4 +1,4 @@
-## Installation and experiments 
+## Installation 
 
 ```
 mkdir aprec_repro
@@ -6,27 +6,35 @@ cd aprec_repro
 ```
 
 ```
-git clone git@github.com:asash/b4rvae.git b4rvae
+git clone https://github.com/asash/b4rvae.git b4rvae
 ```
 
 ```
-git clone git@github.com:asash/bert4rec_repro.git aprec
+git clone https://github.com/blondered/bert4rec_repro.git aprec
 ```
 
+Optionally clone RecTools if you are not using a released version:
+```
+git clone https://github.com/MobileTeleSystems/RecTools.git
+```
+
+Install required packages:
 ```
 cd aprec
+git checkout feature/rectools
 python3.10 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt 
 ```
 
-(TODO: update rectools version in requirements.txt) 
-Alternaively clone RecTools and run:
+(TODO: update rectools version in requirements.txt after transformers release) 
+
+Install cloned reops
 ```
 pip install -e ./../RecTools
 ```
 
-Run experiments:
+## Run experiments
 
 ```
 cd aprec/evaluation
@@ -41,6 +49,7 @@ OR without requiring commits:
 CHECK_COMMIT_STATUS=false sh run_n_experiments.sh configs/ML1M-bpr-example.py
 ```
 
+# Original README
 
 ### This is a joint code repository for two papers published at 16th ACM Conference on Recommender Systems 
 (Seattle, WA, USA, 18th-23rd September 2022)
