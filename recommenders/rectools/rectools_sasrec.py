@@ -3,12 +3,12 @@ from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
 
 SASREC_PARAMS = {
-    session_max_len: 50,
-    n_heads: 2,
-    n_factors: 64,
-    n_blocks: 2,
-    lr: 0.001,
-    loss: "softmax"
+    "session_max_len": 50,
+    "n_heads": 2,
+    "n_factors": 64,
+    "n_blocks": 2,
+    "lr": 0.001,
+    "loss": "softmax"
 }
 
 class RectoolsSASRec(RectoolsRecommender):
