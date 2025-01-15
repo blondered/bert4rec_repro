@@ -3,6 +3,7 @@ from rectools.models.bert4rec import BERT4RecModel
 from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
 import typing as tp
+import numpy as np
 
 from rectools.models.base import ModelConfig
 
