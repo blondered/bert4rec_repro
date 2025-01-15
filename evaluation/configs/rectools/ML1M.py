@@ -25,8 +25,8 @@ from aprec.recommenders.svd import SvdRecommender
 from aprec.recommenders.bert4recrepro.recbole_bert4rec import RecboleBERT4RecRecommender
 from aprec.recommenders.bert4recrepro.b4vae_bert4rec import B4rVaeBert4Rec
 from aprec.recommenders.lightfm import LightFMRecommender
-from aprec.recommenders.vanilla_bert4rec import VanillaBERT4Rec
-from aprec.recommenders.bert4recrepro.recbole_bert4rec import RecboleBERT4RecRecommender
+# from aprec.recommenders.vanilla_bert4rec import VanillaBERT4Rec
+# from aprec.recommenders.bert4recrepro.recbole_bert4rec import RecboleBERT4RecRecommender
 
 
 DATASET = "BERT4rec.ml-1m"
