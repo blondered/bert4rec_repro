@@ -6,16 +6,33 @@ import typing as tp
 
 from rectools.models.base import ModelConfig
 
-DEFAULT_PARAMS = {
-    "session_max_len": 50,
-    "n_heads": 2,
-    "n_factors": 64,
+# SASREC_DEFAULT_PARAMS = {
+#     "session_max_len": 50,
+#     "n_heads": 2,
+#     "n_factors": 64,
+#     "n_blocks": 2,
+#     "lr": 0.001,
+#     "loss": "softmax",
+# }
+
+SASREC_DEFAULT_PARAMS = {
+    "session_max_len": 100,
+    "n_heads": 4,
+    "n_factors": 256,
     "n_blocks": 2,
     "lr": 0.001,
-    "loss": "softmax"
+    "loss": "softmax",
 }
 
-BERT_MASK_PROB = 0.2
+BERT4REC_DEFAULT_PARAMS = {
+    "session_max_len": 100,
+    "n_heads": 4,
+    "n_factors": 256,
+    "n_blocks": 2,
+    "lr": 0.001,
+    "loss": "softmax",
+    "mask_prob": 0.15   
+}
 
 class RectoolsSASRec(RectoolsRecommender):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
@@ -29,7 +46,7 @@ class RectoolsSASRec(RectoolsRecommender):
             accelerator="gpu",
             devices=1
         )
-        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **DEFAULT_PARAMS)
+        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **SASREC_DEFAULT_PARAMS)
 
 
 class RectoolsBERT4Rec(RectoolsRecommender):
@@ -44,4 +61,4 @@ class RectoolsBERT4Rec(RectoolsRecommender):
             accelerator="gpu",
             devices=1
         )
-        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, mask_prob = BERT_MASK_PROB, **DEFAULT_PARAMS)
+        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **BERT4REC_DEFAULT_PARAMS)
