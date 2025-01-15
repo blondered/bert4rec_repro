@@ -88,7 +88,7 @@ def recbole_bert4rec(epochs=EPOCHS):
 RECOMMENDERS = {
     "sasrec_rt": sasrec_rt,
     "bert4rec_rt": bert4rec_rt,
-    # "b4vae_bert4rec": b4rvae_bert4rec,
+    "b4vae_bert4rec": b4rvae_bert4rec,
     # "vanilla_sasrec": vanilla_sasrec,  # tensorflow required, as well as for original bert4rec
     # "recbole_bert4rec": recbole_bert4rec, # recbole neded, not tested
     # "our_bert4rec": # tensorflow required
