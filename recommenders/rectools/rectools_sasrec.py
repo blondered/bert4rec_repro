@@ -3,6 +3,8 @@ from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
 import typing as tp
 
+from rectools.models.base import ModelConfig
+
 SASREC_PARAMS = {
     "session_max_len": 50,
     "n_heads": 2,
