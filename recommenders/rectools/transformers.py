@@ -54,7 +54,7 @@ class RectoolsTransformer(RectoolsRecommender):
         processed_dataset = self.model.data_preparator.transform_dataset_u2i(self.dataset, users)
         recommend_trainer = Trainer(devices=1, accelerator=self.model.recommend_device)
         recommend_dataloader = self.model.data_preparator.get_dataloader_recommend(processed_dataset)
-        session_embs = recommend_trainer.predict(model=self.lightning_model, dataloaders=recommend_dataloader)
+        session_embs = recommend_trainer.predict(model=self.model.lightning_model, dataloaders=recommend_dataloader)
         user_embs = np.concatenate(session_embs, axis=0)
         for user_ind, user_id in enumerate(users):
             user_emb = user_embs[user_ind]
