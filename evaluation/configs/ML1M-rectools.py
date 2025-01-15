@@ -21,21 +21,25 @@ def top_recommender_rt():
     }
     return RectoolsRecommender(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, model_config=config)
 
-def lightfm_recommender_rt(no_components, loss):
-    config = {
-        "cls": "LightFMWrapperModel",
-        "model": {
-            "no_components": no_components,
-            "random_state": 32,
-            "loss": loss
-        },
-        "epochs": 20,
-    }
-    return RectoolsRecommender(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, model_config=config)
+# def lightfm_recommender_rt(no_components, loss):
+#     config = {
+#         "cls": "LightFMWrapperModel",
+#         "model": {
+#             "no_components": no_components,
+#             "random_state": 32,
+#             "loss": loss
+#         },
+#         "epochs": 20,
+#     }
+#     return RectoolsRecommender(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, model_config=config)
+
+def sasrec_rt():
+    return RectoolsSASRec(filter_seen=True, random_state=32, epochs=1)
 
 RECOMMENDERS = {
-    "top_recommender_rt": top_recommender_rt,
-    "lightfm_recommender_rt": lambda: lightfm_recommender_rt(30, 'bpr'),
+    "sasrec_rt": sasrec_rt
+    # "top_recommender_rt": top_recommender_rt,
+    # "lightfm_recommender_rt": lambda: lightfm_recommender_rt(30, 'bpr'),
 }
 
 MAX_TEST_USERS=6040
@@ -45,3 +49,4 @@ METRICS = [NDCG(10), MRR()]
 RECOMMENDATIONS_LIMIT = 100
 SPLIT_STRATEGY = LeaveOneOut(MAX_TEST_USERS)
 
+TARGET_ITEMS_SAMPLER = PopTargetItemsSampler(101)

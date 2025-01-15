@@ -45,7 +45,28 @@ BERT4REC_DEFAULT_PARAMS = {
 #     "mask_prob": 0.15   
 # }
 
-class RectoolsSASRec(RectoolsRecommender):
+class RectoolsTransformer(RectoolsRecommender):
+
+    def get_item_rankings(self):
+        result = {}
+        item_embs = self.model.lightning_model.item_embs.detach().cpu().numpy()
+        users = [request.user_id for request in self.items_ranking_requests]
+        processed_dataset = self.model.data_preparator.transform_dataset_u2i(self.dataset, users)
+        recommend_trainer = Trainer(devices=1, accelerator=self.model.recommend_device)
+        recommend_dataloader = self.model.data_preparator.get_dataloader_recommend(processed_dataset)
+        session_embs = recommend_trainer.predict(model=self.lightning_model, dataloaders=recommend_dataloader)
+        user_embs = np.concatenate(session_embs, axis=0)
+        for user_ind, user_id in enumerate(users):
+            user_emb = user_embs[user_ind]
+            candidates = self.items_ranking_requests[user_ind].item_ids
+            candidate_embs = item_embs[candidates]
+            scores = candidate_embs @ user_emb
+            user_results = [zip(candidates, scores)]
+            user_result.sort(key=lambda x: -x[1])
+            result[user_id] = user_result
+        return result
+
+class RectoolsSASRec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         trainer = Trainer(
             max_epochs=epochs,
@@ -60,7 +81,7 @@ class RectoolsSASRec(RectoolsRecommender):
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **SASREC_DEFAULT_PARAMS)
 
 
-class RectoolsBERT4Rec(RectoolsRecommender):
+class RectoolsBERT4Rec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         trainer = Trainer(
             max_epochs=epochs,
