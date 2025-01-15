@@ -6,33 +6,44 @@ import typing as tp
 
 from rectools.models.base import ModelConfig
 
-# SASREC_DEFAULT_PARAMS = {
-#     "session_max_len": 50,
-#     "n_heads": 2,
-#     "n_factors": 64,
-#     "n_blocks": 2,
-#     "lr": 0.001,
-#     "loss": "softmax",
-# }
 
 SASREC_DEFAULT_PARAMS = {
-    "session_max_len": 100,
-    "n_heads": 4,
-    "n_factors": 256,
+    "session_max_len": 50,
+    "n_heads": 2,
+    "n_factors": 64,
     "n_blocks": 2,
     "lr": 0.001,
     "loss": "softmax",
 }
 
 BERT4REC_DEFAULT_PARAMS = {
-    "session_max_len": 100,
-    "n_heads": 4,
-    "n_factors": 256,
+    "session_max_len": 50,
+    "n_heads": 2,
+    "n_factors": 64,
     "n_blocks": 2,
     "lr": 0.001,
     "loss": "softmax",
-    "mask_prob": 0.15   
+    "mask_prob": 0.2   
 }
+
+# SASREC_DEFAULT_PARAMS = {
+#     "session_max_len": 100,
+#     "n_heads": 4,
+#     "n_factors": 256,
+#     "n_blocks": 2,
+#     "lr": 0.001,
+#     "loss": "softmax",
+# }
+
+# BERT4REC_DEFAULT_PARAMS = {
+#     "session_max_len": 100,
+#     "n_heads": 4,
+#     "n_factors": 256,
+#     "n_blocks": 2,
+#     "lr": 0.001,
+#     "loss": "softmax",
+#     "mask_prob": 0.15   
+# }
 
 class RectoolsSASRec(RectoolsRecommender):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
