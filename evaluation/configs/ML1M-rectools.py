@@ -5,6 +5,7 @@ from aprec.evaluation.samplers.pop_sampler import PopTargetItemsSampler
 from aprec.evaluation.metrics.mrr import MRR
 from aprec.evaluation.metrics.ndcg import NDCG
 from aprec.evaluation.split_actions import LeaveOneOut
+from aprec.recommenders.rectools.transformers import RectoolsSASRec, RectoolsBERT4Rec
 import numpy as np
 
 
