@@ -1,6 +1,7 @@
 from rectools.models.sasrec import SASRecModel
 from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
+import typing as tp
 
 SASREC_PARAMS = {
     "session_max_len": 50,
