@@ -15,7 +15,7 @@ from rectools.models import model_from_config
 
 
 class RectoolsRecommender(Recommender):
-    def __init__(self, filter_seen: bool, random_state: int=32, model_config: tp.Optional[ModelConfig]=None):
+    def __init__(self, filter_seen: bool, random_state: int=32, model_config: tp.Optional[ModelConfig]=None, epochs: int=1):
         super().__init__()
         self.interactions = []
         self.filter_seen = filter_seen
@@ -31,9 +31,9 @@ class RectoolsRecommender(Recommender):
         torch.use_deterministic_algorithms(True)
         seed_everything(random_state, workers=True)
         
-        self._init_model(model_config)
+        self._init_model(model_config, epochs)
         
-    def _init_model(self, model_config: tp.Optional[ModelConfig]):
+    def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         if model_config is None:
             raise NotImplementedError
         self.model = model_from_config(model_config)
