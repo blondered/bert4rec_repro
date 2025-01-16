@@ -6,6 +6,7 @@ from aprec.api.action import Action
 import pandas as pd
 import numpy as np
 from lightning_fabric import seed_everything
+import tqdm
 
 from rectools.dataset import Dataset
 import threadpoolctl
@@ -65,6 +66,30 @@ class RectoolsRecommender(Recommender):
         sorted_reco = sorted_reco.merge(grouped_reco, how="left", on="user_id")
         res = [el if isinstance(el, list) else [] for el in list(sorted_reco["rec_tuple"].values)]
         return res
+
+    def get_item_rankings(self):
+        result = {}
+        print('generating sampled predictions...')
+        for request in tqdm.tqdm(self.items_ranking_requests):
+
+            user_id, candidates = request.user_id, request.item_ids
+
+            reco = self.model.recommend(
+                users=[user_id],
+                dataset=self.dataset,
+                filter_viewed=self.filter_seen,
+                k=len(candidates),
+                items_to_recommend=candidates
+            )
+            reco["rec_tuple"] = tuple(zip(reco["item_id"], reco["score"]))
+            scored_results = list(reco["rec_tuple"].values)
+
+            missing = [item for item in candidates if item not in reco["item_id"].values]
+            missing_results = [(id, float("-inf")) for id in missing]
+
+            result[user_id] = scored_results + missing_results
+
+        return result
 
     # this works but too slow
     # cold users are not handled (should raise but no tested)

@@ -46,35 +46,10 @@ BERT4REC_DEFAULT_PARAMS = {
     "mask_prob": 0.15   
 }
 
-class RectoolsTransformer(RectoolsRecommender):
+RectoolsTransformer = RectoolsRecommender
 
-    def get_item_rankings(self):
-        result = {}
-        for request in self.items_ranking_requests:
-            user_id, candidates = request.user_id, request.item_ids
-
-            reco = self.model.recommend(
-                users=[user_id],
-                dataset=self.dataset,
-                filter_viewed=self.filter_seen,
-                k=len(candidates),
-                items_to_recommend=candidates
-            )
-            reco["rec_tuple"] = tuple(zip(reco["item_id"], reco["score"]))
-            scored_results = list(reco["rec_tuple"].values)
-
-            missing = [item for item in candidates if item not in reco["item_id"].values]
-            missing_results = [(id, float("-inf")) for id in missing]
-
-            result[user_id] = scored_results + missing_results
-
-        return result
-
-
-
-
-
-    # NOT WORKING
+# NOT WORKING
+# class RectoolsTransformer(RectoolsRecommender):
 #     def get_item_rankings(self):
 #         result = {}
 #         item_embs = self.model.lightning_model.item_embs.detach().cpu().numpy()
