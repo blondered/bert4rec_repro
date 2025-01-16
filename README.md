@@ -19,6 +19,8 @@ To assure same settings experiments were run together with BERT4Rec-VAE model fr
 |**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | -    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
+# Reproduce our results:
+
 ## Installation 
 
 Create working directory:
@@ -86,6 +88,14 @@ You may also check results of the models that already have been evaluated using 
 
 ```
 python3 analyze_experiment_in_progress.py ./results/latest_experiment/stdout
+```
+
+## Relevant benchmark configs
+
+To reproduce RecTools and BERT4Rec-VAE results from the table above run:
+
+```
+sh run_n_experiments.sh configs/rectools/ml_1m.py
 ```
 
 # Original README is below:
