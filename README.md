@@ -1,10 +1,38 @@
+# RecTools transformers benchmark results
+
+Different model implementation results were taken from [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
+
+RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro)   
+To assure same settings experiments were run together with BERT4Rec-VAE model from published paper. We achieved the same metric results for this model as were reported in the original paper.
+
+### ML-1M Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |0.5134|  0.2736  | 0.0740    |  0.0377 | 58    |
+|SASRec original |0.6370|  0.4033 | 0.1993    |  0.1078 | 316    |
+|BERT4Rec original |0.5215|  0.3042  | 0.1518    |  0.0806 | 2,665    |
+|BERT4Rec RecBole |0.4562|  0.2589  | 0.1061    |  0.0546 | 20,499    |
+|BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085    |
+|BERT4Rec ber4rec_repro |0.6865|  0.4602  | 0.2584    |  0.1392 | 3,679    |
+|BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
+|**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | 535*    |
+|**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
+Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
+
+* RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
+
+# Reproduce our results:
+
 ## Installation 
+
+Create working directory:
 
 ```
 mkdir aprec_repro
 cd aprec_repro
 ```
 
+Clone repositories:
 ```
 git clone https://github.com/asash/b4rvae.git b4rvae
 ```
@@ -13,12 +41,13 @@ git clone https://github.com/asash/b4rvae.git b4rvae
 git clone https://github.com/blondered/bert4rec_repro.git aprec
 ```
 
-Optionally clone RecTools if you are not using a released version:
+Optionally clone RecTools repository if you are not using a released version:
 ```
 git clone https://github.com/MobileTeleSystems/RecTools.git
 ```
 
-Install required packages:
+Install required packages:  (TODO: remove feature branch)
+If you didn't clone RecTools repository, make sure it's uncommented in requirements.txt
 ```
 cd aprec
 git checkout feature/rectools
@@ -29,27 +58,51 @@ pip install -r requirements.txt
 
 (TODO: update rectools version in requirements.txt after transformers release) 
 
-Install cloned reops
+If you did clonde RecTools repository, install it in virtual environment:
 ```
 pip install -e ./../RecTools
 ```
 
-## Run experiments
+## Running and analyzing experiments
 
+Open aprec/evaluation directory:
 ```
-cd aprec/evaluation
+cd evaluation
 ```
-
+Run example experiment:
 ```
 sh run_n_experiments.sh configs/ML1M-bpr-example.py
 ```
-OR without requiring commits:
+Note
+
+For experiment reproducibility purposes run_n_experiments.sh requires that all code in the repository is commited before running the experiment. The framework records commit id in the experiment results, so that it is always possible to return to exatly the same state of the repository and rerun the experiment. If you want to override this behaviour, set environment variable CHECK_COMMIT_STATUS=false. For example:
 
 ```
 CHECK_COMMIT_STATUS=false sh run_n_experiments.sh configs/ML1M-bpr-example.py
 ```
 
-# Original README
+You can tail experiment stdout:
+```
+tail -f run_n_experiments.sh ./results/latest_experiment/stdout
+```
+
+You may also check results of the models that already have been evaluated using ```analyze_experiment_in_progress.py``` script: 
+
+```
+python3 analyze_experiment_in_progress.py ./results/latest_experiment/stdout
+```
+
+Results of previous experiments you can find in the directory: `./results/<experiment_id>/experiment_.json`
+
+## Reproducing benchmark results
+
+To reproduce RecTools and BERT4Rec-VAE results from the table above run:
+
+```
+sh run_n_experiments.sh configs/rectools/ml_1m.py
+```
+
+# Original README is below:
 
 ### This is a joint code repository for two papers published at 16th ACM Conference on Recommender Systems 
 (Seattle, WA, USA, 18th-23rd September 2022)
