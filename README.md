@@ -15,9 +15,11 @@ To assure same settings experiments were run together with BERT4Rec-VAE model fr
 |BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085    |
 |BERT4Rec ber4rec_repro |0.6865|  0.4602  | 0.2584    |  0.1392 | 3,679    |
 |BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
-|**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | -    |
-|**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | -    |
+|**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | 535*    |
+|**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
+
+* RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
 
 # Reproduce our results:
 
