@@ -2,7 +2,7 @@
 
 Different model implementation results were taken from [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
 
-RecTools models (SASRec and BERT4Rec) results were computed using the same code from the [original repository](https://github.com/asash/bert4rec_repro)   
+RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro)   
 To assure same settings experiments were run together with BERT4Rec-VAE model from published paper. We achieved the same metric results for this model as were reported in the original paper.
 
 ### ML-1M Dataset results
@@ -61,7 +61,7 @@ If you did clonde RecTools repository, install it in virtual environment:
 pip install -e ./../RecTools
 ```
 
-## Run experiments
+## Running and analyzing experiments
 
 Open aprec/evaluation directory:
 ```
@@ -90,7 +90,9 @@ You may also check results of the models that already have been evaluated using 
 python3 analyze_experiment_in_progress.py ./results/latest_experiment/stdout
 ```
 
-## Relevant benchmark configs
+Results of previous experiments you can find in the directory: `./results/<experiment_id>/experiment_.json`
+
+## Reproducing benchmark results
 
 To reproduce RecTools and BERT4Rec-VAE results from the table above run:
 
