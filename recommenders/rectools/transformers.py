@@ -48,6 +48,7 @@ BERT4REC_DEFAULT_PARAMS = {
 
 class RectoolsTransformer(RectoolsRecommender):
 
+    # NOT WORKING
     def get_item_rankings(self):
         result = {}
         item_embs = self.model.lightning_model.item_embs.detach().cpu().numpy()
