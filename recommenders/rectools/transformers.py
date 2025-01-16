@@ -58,7 +58,10 @@ class RectoolsTransformer(RectoolsRecommender):
         recommend_dataloader = self.model.data_preparator.get_dataloader_recommend(processed_dataset)
         session_embs = recommend_trainer.predict(model=self.model.lightning_model, dataloaders=recommend_dataloader)
         user_embs = np.concatenate(session_embs, axis=0)
-        for user_ind, user_id in enumerate(users):
+
+        user_inds = processed_dataset.user_id_map.convert_to_internal(users)
+
+        for user_ind, user_id in zip(user_inds, users):
             user_emb = user_embs[user_ind]
             candidates = self.items_ranking_requests[user_ind].item_ids
             candidate_indexes, missing = self.model.data_preparator.item_id_map.convert_to_internal(candidates, strict=False, return_missing=True)
