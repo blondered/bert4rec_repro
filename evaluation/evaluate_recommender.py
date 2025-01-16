@@ -80,9 +80,9 @@ def evaluate_recommender(recommender, test_actions,
     mkdir_p(f"{out_dir}/predictions_sampled/")
     predictions_filename = f"{out_dir}/predictions_sampled/{recommender_name}.json.gz"
     with gzip.open(predictions_filename, "w") as output:
-        for user_doc in user_docs:
+        for sampled_ranking in sampled_rankings:
             try:
-                output.write(json.dumps(user_doc).encode("utf-8") + b"\n")
+                output.write(json.dumps(sampled_ranking).encode("utf-8") + b"\n")
             except:
                 pass
 
