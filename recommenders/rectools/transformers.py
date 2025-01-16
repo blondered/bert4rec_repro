@@ -8,43 +8,43 @@ import numpy as np
 from rectools.models.base import ModelConfig
 
 
-SASREC_DEFAULT_PARAMS = {
-    "session_max_len": 50,
-    "n_heads": 2,
-    "n_factors": 64,
-    "n_blocks": 2,
-    "lr": 0.001,
-    "loss": "softmax",
-}
-
-BERT4REC_DEFAULT_PARAMS = {
-    "session_max_len": 50,
-    "n_heads": 2,
-    "n_factors": 64,
-    "n_blocks": 2,
-    "lr": 0.001,
-    "loss": "softmax",
-    "mask_prob": 0.2   
-}
-
 # SASREC_DEFAULT_PARAMS = {
-#     "session_max_len": 100,
-#     "n_heads": 4,
-#     "n_factors": 256,
+#     "session_max_len": 50,
+#     "n_heads": 2,
+#     "n_factors": 64,
 #     "n_blocks": 2,
 #     "lr": 0.001,
 #     "loss": "softmax",
 # }
 
 # BERT4REC_DEFAULT_PARAMS = {
-#     "session_max_len": 100,
-#     "n_heads": 4,
-#     "n_factors": 256,
+#     "session_max_len": 50,
+#     "n_heads": 2,
+#     "n_factors": 64,
 #     "n_blocks": 2,
 #     "lr": 0.001,
 #     "loss": "softmax",
-#     "mask_prob": 0.15   
+#     "mask_prob": 0.2   
 # }
+
+SASREC_DEFAULT_PARAMS = {
+    "session_max_len": 100,
+    "n_heads": 4,
+    "n_factors": 256,
+    "n_blocks": 2,
+    "lr": 0.001,
+    "loss": "softmax",
+}
+
+BERT4REC_DEFAULT_PARAMS = {
+    "session_max_len": 100,
+    "n_heads": 4,
+    "n_factors": 256,
+    "n_blocks": 2,
+    "lr": 0.001,
+    "loss": "softmax",
+    "mask_prob": 0.15   
+}
 
 class RectoolsTransformer(RectoolsRecommender):
 
@@ -61,9 +61,10 @@ class RectoolsTransformer(RectoolsRecommender):
             user_emb = user_embs[user_ind]
             candidates = self.items_ranking_requests[user_ind].item_ids
             candidate_indexes, missing = self.model.data_preparator.item_id_map.convert_to_internal(candidates, strict=False, return_missing=True)
+            scored_candidates = [x for x in candidates if x not in missing]
             candidate_embs = item_embs[candidate_indexes]
             scores = candidate_embs @ user_emb
-            user_result =  [tuple(x) for x in zip(candidates, scores)]
+            user_result =  [tuple(x) for x in zip(scored_candidates, scores)]
             missing_results = [(id, float("-inf")) for id in missing]
             user_result.extend(missing_results)
             user_result.sort(key=lambda x: -x[1])
