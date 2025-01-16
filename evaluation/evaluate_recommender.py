@@ -65,6 +65,7 @@ def evaluate_recommender(recommender, test_actions,
                 sampled_metric_value = metric(sampled_rankings[user_id], test_actions_by_user[user_id])
                 sampled_metric_sum[metric.name] += sampled_metric_value
                 user_doc["sampled_metrics"][metric.name] = sampled_metric_value
+                user_doc["sampled_predictions"] = [(prediction[0], float(prediction[1])) for prediction in sampled_rankings[user_id]]
 
         user_docs.append(user_doc)
 
@@ -76,19 +77,6 @@ def evaluate_recommender(recommender, test_actions,
         except:
             pass
 
-    mkdir_p(f"{out_dir}/predictions_sampled/")
-    predictions_filename = f"{out_dir}/predictions_sampled/{recommender_name}.json.gz"
-    with gzip.open(predictions_filename, "w") as output:
-        for user_id in all_user_ids:
-            tmp = {
-                "user_id": user_id,
-                "sampled_ranking": sampled_rankings[user_id], 
-                "test_actions": test_actions_by_user[user_id]
-                }
-            try:
-                output.write(json.dumps(tmp).encode("utf-8") + b"\n")
-            except:
-                pass
 
     result = {}
     sampled_result = {}
