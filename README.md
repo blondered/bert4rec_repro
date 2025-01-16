@@ -49,6 +49,11 @@ OR without requiring commits:
 CHECK_COMMIT_STATUS=false sh run_n_experiments.sh configs/ML1M-bpr-example.py
 ```
 
+Tail experiment stdout:
+```
+tail -f run_n_experiments.sh ./results/latest_experiment/stdout
+```
+
 # Original README
 
 ### This is a joint code repository for two papers published at 16th ACM Conference on Recommender Systems 

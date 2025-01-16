@@ -35,7 +35,7 @@ USERS_FRACTIONS = [1]
 FILTER_SEEN = True  # TODO: not applied
 RANDOM_STATE = 32
 
-EPOCHS = 10
+EPOCHS = 1
 
 def sasrec_rt():
     return RectoolsSASRec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
