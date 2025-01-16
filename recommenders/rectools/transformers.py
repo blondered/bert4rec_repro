@@ -48,32 +48,58 @@ BERT4REC_DEFAULT_PARAMS = {
 
 class RectoolsTransformer(RectoolsRecommender):
 
-    # NOT WORKING
     def get_item_rankings(self):
         result = {}
-        item_embs = self.model.lightning_model.item_embs.detach().cpu().numpy()
-        users = [request.user_id for request in self.items_ranking_requests]
-        processed_dataset = self.model.data_preparator.transform_dataset_u2i(self.dataset, users)
-        recommend_trainer = Trainer(devices=1, accelerator=self.model.recommend_device)
-        recommend_dataloader = self.model.data_preparator.get_dataloader_recommend(processed_dataset)
-        session_embs = recommend_trainer.predict(model=self.model.lightning_model, dataloaders=recommend_dataloader)
-        user_embs = np.concatenate(session_embs, axis=0)
+        for request in self.items_ranking_requests:
+            user_id, candidates = request.user_id, request.item_ids
 
-        user_inds = processed_dataset.user_id_map.convert_to_internal(users)
+            reco = self.model.recommend(
+                users=[user_id],
+                dataset=self.dataset,
+                filter_viewed=self.filter_seen,
+                k=len(candidates),
+                items_to_recommend=candidates
+            )
+            reco["rec_tuple"] = tuple(zip(reco["item_id"], reco["score"]))
+            scored_results = list(reco["rec_tuple"].values)
 
-        for user_ind, user_id in zip(user_inds, users):
-            user_emb = user_embs[user_ind]
-            candidates = self.items_ranking_requests[user_ind].item_ids
-            candidate_indexes, missing = self.model.data_preparator.item_id_map.convert_to_internal(candidates, strict=False, return_missing=True)
-            scored_candidates = [x for x in candidates if x not in missing]
-            candidate_embs = item_embs[candidate_indexes]
-            scores = candidate_embs @ user_emb
-            user_result =  [tuple(x) for x in zip(scored_candidates, scores)]
+            missing = [item for item in candidates if item not in reco["item_id"].values]
             missing_results = [(id, float("-inf")) for id in missing]
-            user_result.extend(missing_results)
-            user_result.sort(key=lambda x: -x[1])
-            result[user_id] = user_result
+
+            result[user_id] = scored_results + missing_results
+
         return result
+
+
+
+
+
+    # NOT WORKING
+#     def get_item_rankings(self):
+#         result = {}
+#         item_embs = self.model.lightning_model.item_embs.detach().cpu().numpy()
+#         users = [request.user_id for request in self.items_ranking_requests]
+#         processed_dataset = self.model.data_preparator.transform_dataset_u2i(self.dataset, users)
+#         recommend_trainer = Trainer(devices=1, accelerator=self.model.recommend_device)
+#         recommend_dataloader = self.model.data_preparator.get_dataloader_recommend(processed_dataset)
+#         session_embs = recommend_trainer.predict(model=self.model.lightning_model, dataloaders=recommend_dataloader)
+#         user_embs = np.concatenate(session_embs, axis=0)
+
+#         user_inds = processed_dataset.user_id_map.convert_to_internal(users)
+
+#         for user_ind, user_id in zip(user_inds, users): 
+#             user_emb = user_embs[user_ind]
+#             candidates = self.items_ranking_requests[user_ind].item_ids
+#             candidate_indexes, missing = self.model.data_preparator.item_id_map.convert_to_internal(candidates, strict=False, return_missing=True)
+#             scored_candidates = [x for x in candidates if x not in missing]
+#             candidate_embs = item_embs[candidate_indexes]
+#             scores = candidate_embs @ user_emb
+#             user_result =  [tuple(x) for x in zip(scored_candidates, scores)]
+#             missing_results = [(id, float("-inf")) for id in missing]
+#             user_result.extend(missing_results)
+#             user_result.sort(key=lambda x: -x[1])
+#             result[user_id] = user_result
+#         return result
 
 class RectoolsSASRec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
