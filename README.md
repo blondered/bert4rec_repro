@@ -1,3 +1,139 @@
+<i>This benchmark is still in progress:
+- We keep running experiments on different datasets
+- We still prepare RecTools models for release in the framework (documentaion, tests and tutorials are not yet finished)</i>
+
+# [RecTools](https://github.com/MobileTeleSystems/RecTools) transformers benchmark results
+
+RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro). Results for other implementations were taken from the original paper [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
+
+
+
+**RecTools implementations achieve highest metrics on both datasets out of all available implementations from the original paper.**
+
+### ML-20M Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |0.6126|  0.3424  | 0.0807    |  0.0407 | 197    |
+|SASRec original |0.6582|  0.4002 | 0.1439    |  0.0724 | 3635    |
+|BERT4Rec original |0.4027|  0.2193  | 0.0939    |  0.0474 | 6,029    |
+|BERT4Rec RecBole |0.4611|  0.2589  | 0.0906    |  0.0753 | 519,666    |
+|BERT4Rec BERT4Rec-VAE |0.7409|  0.5259  | 0.2886    |  0.1732 | 23,030    |
+|BERT4Rec ber4rec_repro |0.7127|  0.4805  | 0.2393    |  0.1310 | 44,610    |
+|BERT4Rec ber4rec_repro (longer seq) |0.7268|  0.4980  | 0.2514    |  0.1456 | 39,632    |
+|**SASRec RecTools** | <u>0.7562</u> |  <u>0.5422</u>   | <u>0.2994</u>   |  <u>0.1834</u> | *    |
+|**BERT4Rec RecTools** |-|  -  | -    |  - | *    |
+Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
+
+### ML-1M Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |0.5134|  0.2736  | 0.0740    |  0.0377 | 58    |
+|SASRec original |0.6370|  0.4033 | 0.1993    |  0.1078 | 316    |
+|BERT4Rec original |0.5215|  0.3042  | 0.1518    |  0.0806 | 2,665    |
+|BERT4Rec RecBole |0.4562|  0.2589  | 0.1061    |  0.0546 | 20,499    |
+|BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085    |
+|BERT4Rec ber4rec_repro |0.6865|  0.4602  | 0.2584    |  0.1392 | 3,679    |
+|BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
+|DeBERTa4Rec ber4rec_repro | - |  - | 0.290    |  0.159 | -    |
+|ALBERT4Rec ber4rec_repro | - |  - | 0.300    |  0.165 | -    |
+|**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | 535*    |
+|**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
+Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
+
+
+### Notes
+- To assure same settings with the paper experiments with RecTools models were run together with BERT4Rec-VAE model from published paper. We achieved the same metric results for this model as were reported in the original paper.
+- RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
+- RecTools model params were set equal to BERT4Rec-VAE model params reported in the paper. 
+- RecTools models were trained for 200 epochs on each dataset.
+- SASRec model from Rectools was trained on softmax loss.
+
+# Reproduce our results:
+
+## Installation 
+
+Create working directory:
+
+```
+mkdir aprec_repro
+cd aprec_repro
+```
+
+Clone repositories:
+```
+git clone https://github.com/asash/b4rvae.git b4rvae
+```
+
+```
+git clone https://github.com/blondered/bert4rec_repro.git aprec
+```
+
+Optionally clone RecTools repository if you are not using a released version:
+```
+git clone https://github.com/MobileTeleSystems/RecTools.git
+```
+
+Install required packages: 
+If you didn't clone RecTools repository, make sure `rectools` package is uncommented in requirements.txt. Please check that rectools version is the one that has transformer models released.
+```
+cd aprec
+python3.10 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt 
+```
+
+
+If you did clone RecTools repository, install it in virtual environment:
+```
+cd ../RecTools
+git checkout feature/checkpoints  # or whatever branch you need
+pip install -e RecTools
+cd ../aprec
+```
+
+## Reproducing benchmark results
+
+To reproduce RecTools and BERT4Rec-VAE results from the tables above do the following
+
+Open aprec/evaluation directory:
+```
+cd evaluation
+```
+Run experiments on different datasets:
+
+```
+sh run_n_experiments.sh configs/rectools/ml_1m.py
+```
+```
+sh run_n_experiments.sh configs/rectools/ml_20m.py
+```
+
+Each experiemnt result you can find in the directory: `aprec/evaluation/results/<experiment_id>/experiment_.json`
+
+
+
+## Running and analyzing experiments guide
+
+
+For experiment reproducibility purposes run_n_experiments.sh requires that all code in the repository is commited before running the experiment. The framework records commit id in the experiment results, so that it is always possible to return to exatly the same state of the repository and rerun the experiment. If you want to override this behaviour, set environment variable CHECK_COMMIT_STATUS=false. For example:
+
+```
+CHECK_COMMIT_STATUS=false sh run_n_experiments.sh configs/ML1M-bpr-example.py
+```
+
+You can tail experiment stdout:
+```
+tail -f run_n_experiments.sh ./results/latest_experiment/stdout
+```
+
+You may also check results of the models that already have been evaluated using ```analyze_experiment_in_progress.py``` script: 
+
+```
+python3 analyze_experiment_in_progress.py ./results/latest_experiment/stdout
+```
+
+# Original README is below:
+
 ### This is a joint code repository for two papers published at 16th ACM Conference on Recommender Systems 
 (Seattle, WA, USA, 18th-23rd September 2022)
 

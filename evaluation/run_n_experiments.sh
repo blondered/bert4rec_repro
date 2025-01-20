@@ -1,5 +1,5 @@
 config=$1
-N=$2
+# N=$2
 
 if [ "$CHECK_COMMIT_STATUS" != "false" ]; then
     if [ -n "$(git status --porcelain)" ]; then
@@ -31,13 +31,22 @@ echo experement resutls are saved at $root_dir
 
 cp $config $root_dir
 
-for i in `seq 1 $N`;
-do 
-    experiment_result=$root_dir/experiment_${i}.json
-    echo "experiment_stdout: ${experiment_stdout}"
-    echo "experiment_stderr: ${experiment_stderr}"
-    echo "experiment_result: ${experiment_result}"
-    echo "experiment_commit: ${experiment_commit}"
-    git log -1 > $experiment_commit
-	unbuffer python3 run_experiment.py $config $experiment_result > $experiment_stdout 2> $experiment_stderr;
-done;
+experiment_result=$root_dir/experiment_${i}.json
+echo "experiment_stdout: ${experiment_stdout}"
+echo "experiment_stderr: ${experiment_stderr}"
+echo "experiment_result: ${experiment_result}"
+echo "experiment_commit: ${experiment_commit}"
+git log -1 > $experiment_commit
+python3 run_experiment.py $config $experiment_result > $experiment_stdout 2> $experiment_stderr;
+
+
+#for i in `seq 1 $N`;
+#do 
+#    experiment_result=$root_dir/experiment_${i}.json
+#    echo "experiment_stdout: ${experiment_stdout}"
+#    echo "experiment_stderr: ${experiment_stderr}"
+#    echo "experiment_result: ${experiment_result}"
+#    echo "experiment_commit: ${experiment_commit}"
+#    git log -1 > $experiment_commit
+#	unbuffer python3 run_experiment.py $config $experiment_result > $experiment_stdout 2> $experiment_stderr;
+#done;

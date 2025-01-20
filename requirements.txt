@@ -1,0 +1,11 @@
+# rectools[torch,lightfm]==0.9.0
+
+# install these if you cloned RecTools instead of installing released version:
+# torch==2.2.2
+# pytorch-lightning==2.4.0
+# rectools-lightfm==1.17.3
+
+mmh3>=3.0.0
+requests==2.27.1   # and os.environ['CURL_CA_BUNDLE'] = ''
+wget>=3.2
+tensorboard==2.18.0

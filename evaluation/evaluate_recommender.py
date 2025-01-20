@@ -65,6 +65,7 @@ def evaluate_recommender(recommender, test_actions,
                 sampled_metric_value = metric(sampled_rankings[user_id], test_actions_by_user[user_id])
                 sampled_metric_sum[metric.name] += sampled_metric_value
                 user_doc["sampled_metrics"][metric.name] = sampled_metric_value
+                user_doc["sampled_predictions"] = [(prediction[0], float(prediction[1])) for prediction in sampled_rankings[user_id]]
 
         user_docs.append(user_doc)
 
@@ -76,6 +77,7 @@ def evaluate_recommender(recommender, test_actions,
                 output.write(json.dumps(user_doc).encode("utf-8") + b"\n")
             except:
                 pass
+
 
     result = {}
     sampled_result = {}
