@@ -15,11 +15,27 @@ To assure same settings experiments were run together with BERT4Rec-VAE model fr
 |BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085    |
 |BERT4Rec ber4rec_repro |0.6865|  0.4602  | 0.2584    |  0.1392 | 3,679    |
 |BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
+|DeBERTa4Rec ber4rec_repro | - |  - | 0.290    |  0.159 | -    |
+|ALBERT4Rec ber4rec_repro | - |  - | 0.300    |  0.165 | -    |
 |**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | 535*    |
 |**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
 * RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
+
+### ML-20M Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |0.6126|  0.3424  | 0.0807    |  0.0407 | 197    |
+|SASRec original |0.6582|  0.4002 | 0.1439    |  0.0724 | 3635    |
+|BERT4Rec original |0.4027|  0.2193  | 0.0939    |  0.0474 | 6,029    |
+|BERT4Rec RecBole |0.4611|  0.2589  | 0.0906    |  0.0753 | 519,666    |
+|BERT4Rec BERT4Rec-VAE |0.7409|  0.5259  | 0.2886    |  0.1732 | 23,030    |
+|BERT4Rec ber4rec_repro |0.7127|  0.4805  | 0.2393    |  0.1310 | 44,610    |
+|BERT4Rec ber4rec_repro (longer seq) |0.7268|  0.4980  | 0.2514    |  0.1456 | 39,632    |
+|**SASRec RecTools** | <u>0.7562</u> |  <u>0.5422</u>   | <u>0.2994</u>   |  <u>0.1834</u> | *    |
+|**BERT4Rec RecTools** |-|  -  | -    |  - | *    |
+Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 
 # Reproduce our results:
 
@@ -63,17 +79,29 @@ If you did clonde RecTools repository, install it in virtual environment:
 pip install -e ./../RecTools
 ```
 
-## Running and analyzing experiments
+## Reproducing benchmark results
+
+To reproduce RecTools and BERT4Rec-VAE results from the tables above do the following
 
 Open aprec/evaluation directory:
 ```
 cd evaluation
 ```
-Run example experiment:
+Run experiments on different datasets:
+
 ```
-sh run_n_experiments.sh configs/ML1M-bpr-example.py
+sh run_n_experiments.sh configs/rectools/ml_1m.py
 ```
-Note
+```
+sh run_n_experiments.sh configs/rectools/ml_20m.py
+```
+
+Each experiemnt result you can find in the directory: `aprec/evaluation/results/<experiment_id>/experiment_.json`
+
+
+
+## Running and analyzing experiments guide
+
 
 For experiment reproducibility purposes run_n_experiments.sh requires that all code in the repository is commited before running the experiment. The framework records commit id in the experiment results, so that it is always possible to return to exatly the same state of the repository and rerun the experiment. If you want to override this behaviour, set environment variable CHECK_COMMIT_STATUS=false. For example:
 
@@ -90,16 +118,6 @@ You may also check results of the models that already have been evaluated using 
 
 ```
 python3 analyze_experiment_in_progress.py ./results/latest_experiment/stdout
-```
-
-Results of previous experiments you can find in the directory: `./results/<experiment_id>/experiment_.json`
-
-## Reproducing benchmark results
-
-To reproduce RecTools and BERT4Rec-VAE results from the table above run:
-
-```
-sh run_n_experiments.sh configs/rectools/ml_1m.py
 ```
 
 # Original README is below:
