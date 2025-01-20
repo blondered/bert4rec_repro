@@ -4,6 +4,7 @@ from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
 import typing as tp
 import numpy as np
+import pandas as pd
 
 from rectools.models.base import ModelConfig
 
