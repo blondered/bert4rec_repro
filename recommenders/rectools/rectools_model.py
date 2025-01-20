@@ -16,10 +16,11 @@ from rectools.models import model_from_config
 
 
 class RectoolsRecommender(Recommender):
-    def __init__(self, filter_seen: bool, random_state: int=32, model_config: tp.Optional[ModelConfig]=None, epochs: int=1):
+    def __init__(self, filter_seen: bool, random_state: int=32, model_config: tp.Optional[ModelConfig]=None, epochs: int=1, ckpt: tp.Optional[str] = None):
         super().__init__()
         self.interactions = []
         self.filter_seen = filter_seen
+        self.ckpt = ckpt
 
         # Enable deterministic behaviour with CUDA >= 10.2
         os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"

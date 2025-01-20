@@ -1,4 +1,4 @@
-from rectools.models.sasrec import SASRecModel
+from rectools.models.sasrec import SASRecModel, TransformerModelBase
 from rectools.models.bert4rec import BERT4RecModel
 from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
@@ -66,10 +66,21 @@ class RectoolsSASRec(RectoolsTransformer):
             enable_model_summary=True,
             logger=True,
             accelerator="gpu",
-            devices=1
+            devices=1,
+            default_root_dir="lightning",
         )
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **SASREC_DEFAULT_PARAMS)
 
+
+class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
+    def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
+        self.model = SASRecModel.load_from_checkpoint(self.ckpt)
+    def rebuild_model(self):
+        interactions = pd.DataFrame(self.interactions)
+        interactions["datetime"] = interactions.groupby("user_id").cumcount()
+        interactions["weight"] = 1
+        self.dataset = Dataset.construct(interactions)
+        
 
 class RectoolsBERT4Rec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
@@ -81,6 +92,7 @@ class RectoolsBERT4Rec(RectoolsTransformer):
             enable_model_summary=True,
             logger=True,
             accelerator="gpu",
-            devices=1
+            devices=1,
+            default_root_dir="lightning"
         )
         self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **BERT4REC_DEFAULT_PARAMS)
