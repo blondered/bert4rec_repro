@@ -82,17 +82,6 @@ class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
         interactions["datetime"] = interactions.groupby("user_id").cumcount()
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
-        self.model.fit_trainer = Trainer(
-            max_epochs=1,
-            min_epochs=1,
-            deterministic=True,
-            enable_progress_bar=True,
-            enable_model_summary=True,
-            logger=True,
-            accelerator="gpu",
-            devices=1,
-            default_root_dir="lightning",
-        )
         
 
 class RectoolsBERT4Rec(RectoolsTransformer):
