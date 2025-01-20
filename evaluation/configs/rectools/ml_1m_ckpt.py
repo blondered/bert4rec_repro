@@ -12,7 +12,7 @@ SPLIT_STRATEGY = LeaveOneOut(MAX_TEST_USERS)
 # Rectools does no validation
 
 def sasrec_rt_ckpt():
-    return RectoolsSASRecFromCheckpoint(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS, ckpt="SASRecModel_ml1m")
+    return RectoolsSASRecFromCheckpoint(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS, ckpt="SASRecModel_ml1m.ckpt")
 
 
 RECOMMENDERS = {

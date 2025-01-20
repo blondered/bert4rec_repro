@@ -51,7 +51,7 @@ class RectoolsRecommender(Recommender):
         self.dataset = Dataset.construct(interactions)
         self.model.fit(self.dataset)
         try:
-            self.model.save_checkpoint(self.model.__class__.__name__)
+            self.model.save_checkpoint(self.model.__class__.__name__ + ".ckpt")
         except AttributeError:
             pass
 
