@@ -82,6 +82,15 @@ class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
         interactions["datetime"] = interactions.groupby("user_id").cumcount()
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
+
+class RectoolsBERT4RecFromCheckpoint(RectoolsTransformer):
+    def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
+        self.model = BERT4RecModel.load_from_checkpoint(self.ckpt)
+    def rebuild_model(self):
+        interactions = pd.DataFrame(self.interactions)
+        interactions["datetime"] = interactions.groupby("user_id").cumcount()
+        interactions["weight"] = 1
+        self.dataset = Dataset.construct(interactions)
         
 
 class RectoolsBERT4Rec(RectoolsTransformer):

@@ -12,9 +12,9 @@ RANDOM_STATE = 32
 
 METRICS = [NDCG(10), Recall(10), MRR()]
 RECOMMENDATIONS_LIMIT = 100
-TARGET_ITEMS_SAMPLER = PopTargetItemsSampler(101)
+# TARGET_ITEMS_SAMPLER = PopTargetItemsSampler(101)
 
-EPOCHS = 200
+EPOCHS = 1  #200
 
 def sasrec_rt():
     return RectoolsSASRec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
@@ -31,6 +31,6 @@ def b4rvae_bert4rec(epochs=EPOCHS):
 
 RECOMMENDERS = {
     "sasrec_rt": sasrec_rt,
-    # "bert4rec_rt": bert4rec_rt,
-    # "b4vae_bert4rec": b4rvae_bert4rec,
+    "bert4rec_rt": bert4rec_rt,
+    "b4vae_bert4rec": b4rvae_bert4rec,
 }
