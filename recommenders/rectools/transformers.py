@@ -83,8 +83,8 @@ class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
         self.model.fit_trainer = Trainer(
-            max_epochs=epochs,
-            min_epochs=epochs,
+            max_epochs=1,
+            min_epochs=1,
             deterministic=True,
             enable_progress_bar=True,
             enable_model_summary=True,
