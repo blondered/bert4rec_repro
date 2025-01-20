@@ -1,10 +1,14 @@
+<i>This benchmark is still in progress:
+- We keep running experiments on different datasets
+- We still prepare RecTools models for release in the framework (documentaion, tests and tutorials are not yet finished)</i>
+
 # [RecTools](https://github.com/MobileTeleSystems/RecTools) transformers benchmark results
 
-Different model implementation results were taken from [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
+RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro). Results for other implementations were taken from the original paper [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
 
-RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro)   
 
-**RecTools models achieve highest metrics on both movielens datasets.**
+
+**RecTools implementations achieve highest metrics on both datasets out of all available implementations from the original paper.**
 
 ### ML-20M Dataset results
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
@@ -36,11 +40,10 @@ Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 |**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
-* RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
-
 
 ### Notes
 - To assure same settings with the paper experiments with RecTools models were run together with BERT4Rec-VAE model from published paper. We achieved the same metric results for this model as were reported in the original paper.
+- RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
 - RecTools model params were set equal to BERT4Rec-VAE model params reported in the paper. 
 - RecTools models were trained for 200 epochs on each dataset.
 - SASRec model from Rectools was trained on softmax loss.
@@ -71,7 +74,7 @@ git clone https://github.com/MobileTeleSystems/RecTools.git
 ```
 
 Install required packages: 
-If you didn't clone RecTools repository, make sure it's uncommented in requirements.txt
+If you didn't clone RecTools repository, make sure `rectools` package is uncommented in requirements.txt. Please check that rectools version is the one that has transformer models released.
 ```
 cd aprec
 python3.10 -m venv .venv
@@ -79,7 +82,6 @@ source .venv/bin/activate
 pip install -r requirements.txt 
 ```
 
-(TODO: update rectools version in requirements.txt after transformers release) 
 
 If you did clone RecTools repository, install it in virtual environment:
 ```
