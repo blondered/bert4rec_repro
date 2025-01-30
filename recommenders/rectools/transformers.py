@@ -1,5 +1,5 @@
-from rectools.models.sasrec import SASRecModel, TransformerModelBase
-from rectools.models.bert4rec import BERT4RecModel
+from rectools.models import SASRecModel
+from rectools.models import BERT4RecModel
 from rectools.dataset import Dataset
 from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
