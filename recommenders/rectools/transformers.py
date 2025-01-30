@@ -6,6 +6,8 @@ from pytorch_lightning import Trainer
 import typing as tp
 import numpy as np
 import pandas as pd
+from pytorch_lightning.loggers import CSVLogger
+from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
 from rectools.models.base import ModelConfig
 
@@ -58,9 +60,26 @@ RectoolsTransformer = RectoolsRecommender
 #             result[user_id] = user_result
 #         return result
 
+
+def get_trainer(epochs, callbacks):
+    return Trainer(
+        max_epochs=epochs,
+        min_epochs=epochs,
+        deterministic=True,
+        enable_progress_bar=True,
+        enable_model_summary=True,
+        logger=CSVLogger("rectools_logs"),
+        accelerator="gpu",
+        devices=1,
+        callbacks=callbacks,
+    )
+
 class RectoolsSASRec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        self.model = SASRecModel(epochs=epochs, verbose=100, deterministic=True, **SASREC_DEFAULT_PARAMS)
+        def get_trainer_sasrec():
+            callbacks = ModelCheckpoint(filename="sasrec_last_epoch_{epoch}")
+            return get_trainer(epochs, callbacks)
+        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, **SASREC_DEFAULT_PARAMS)
 
 
 class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
@@ -84,4 +103,7 @@ class RectoolsBERT4RecFromCheckpoint(RectoolsTransformer):
 
 class RectoolsBERT4Rec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        self.model = BERT4RecModel(epochs=epochs, verbose=100, deterministic=True, **BERT4REC_DEFAULT_PARAMS)
+        def get_trainer_ber4rec():
+            callbacks = ModelCheckpoint(filename="bert4rec_last_epoch_{epoch}")
+            return get_trainer(epochs, callbacks)
+        self.model = BERT4RecModel(epochs=epochs, verbose=1, get_trainer_func=get_trainer_ber4rec, deterministic=True, **BERT4REC_DEFAULT_PARAMS)
