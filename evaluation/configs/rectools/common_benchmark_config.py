@@ -14,7 +14,7 @@ METRICS = [NDCG(10), Recall(10), MRR()]
 RECOMMENDATIONS_LIMIT = 100
 # TARGET_ITEMS_SAMPLER = PopTargetItemsSampler(101)
 
-EPOCHS = 1  #200
+EPOCHS = 200
 
 def sasrec_rt():
     return RectoolsSASRec(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
