@@ -50,10 +50,6 @@ class RectoolsRecommender(Recommender):
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
         self.model.fit(self.dataset)
-        try:
-            self.model.save_checkpoint(self.model.__class__.__name__ + ".ckpt")
-        except AttributeError:
-            pass
 
     # recommendation_request: tuple(user_id, features)
     def recommend_batch(self, recommendation_requests, limit):

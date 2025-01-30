@@ -60,18 +60,7 @@ RectoolsTransformer = RectoolsRecommender
 
 class RectoolsSASRec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        trainer = Trainer(
-            max_epochs=epochs,
-            min_epochs=epochs,
-            deterministic=True,
-            enable_progress_bar=True,
-            enable_model_summary=True,
-            logger=True,
-            accelerator="gpu",
-            devices=1,
-            default_root_dir="lightning",
-        )
-        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **SASREC_DEFAULT_PARAMS)
+        self.model = SASRecModel(epochs=epochs, verbose=100, deterministic=True, **SASREC_DEFAULT_PARAMS)
 
 
 class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
@@ -95,15 +84,4 @@ class RectoolsBERT4RecFromCheckpoint(RectoolsTransformer):
 
 class RectoolsBERT4Rec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        trainer = Trainer(
-            max_epochs=epochs,
-            min_epochs=epochs,
-            deterministic=True,
-            enable_progress_bar=True,
-            enable_model_summary=True,
-            logger=True,
-            accelerator="gpu",
-            devices=1,
-            default_root_dir="lightning"
-        )
-        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, trainer=trainer, **BERT4REC_DEFAULT_PARAMS)
+        self.model = BERT4RecModel(epochs=epochs, verbose=100, deterministic=True, **BERT4REC_DEFAULT_PARAMS)
