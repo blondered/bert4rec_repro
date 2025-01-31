@@ -33,8 +33,8 @@ Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 |BERT4Rec RecBole |    0.1996    |    0.1103    |   0.0158   |   0.0079     |   11,024    |
 |BERT4Rec BERT4Rec-VAE |   0.2339 |   0.1407    |  0.0331    |   0.0188   |   21,426     |
 |BERT4Rec ber4rec_repro |  0.1891  |    0.0919    |    0.0166    |   0.0080    |    14,497     |
-|**SASRec RecTools** |     -   |   -      |     **0.0488**    |   **0.031**     |   *     |
-|**BERT4Rec RecTools** |-|  -  | -    |  - | *    |
+|**SASRec RecTools** |     -   |   -      |     **0.0488**    |   **0.0310**     |   *     |
+|**BERT4Rec RecTools** |-|  -  | **0.0407**    |  **0.0218** | *    |
 Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
 
 ### ML-1M Dataset results
