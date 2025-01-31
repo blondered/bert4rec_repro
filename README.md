@@ -8,7 +8,7 @@ RecTools models (SASRec and BERT4Rec) results were computed using this fork os t
 
 
 
-**RecTools implementations achieve highest metrics on both datasets out of all available implementations from the original paper.**
+**RecTools implementations achieve highest metrics on multiple datasets out of all available implementations from the original paper.**
 
 ### ML-20M Dataset results
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
@@ -20,9 +20,22 @@ RecTools models (SASRec and BERT4Rec) results were computed using this fork os t
 |BERT4Rec BERT4Rec-VAE |0.7409|  0.5259  | 0.2886    |  0.1732 | 23,030    |
 |BERT4Rec ber4rec_repro |0.7127|  0.4805  | 0.2393    |  0.1310 | 44,610    |
 |BERT4Rec ber4rec_repro (longer seq) |0.7268|  0.4980  | 0.2514    |  0.1456 | 39,632    |
-|**SASRec RecTools** | <u>0.7562</u> |  <u>0.5422</u>   | <u>0.2994</u>   |  <u>0.1834</u> | *    |
+|**SASRec RecTools** | **0.7562** |  **0.5422**   | **0.2994**   |  **0.1834** | *    |
 |**BERT4Rec RecTools** |-|  -  | -    |  - | *    |
 Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
+
+### Beauty Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |   0.2090 |  0.1089  |  0.0185   | 0.0090  |  58   |
+|SASRec original |   0.1111   | 0.0524  |  0.0079 |  0.0036 |  316   |
+|BERT4Rec original |  0.1099    |  0.0567  |   0.0163   |    0.0079   |  3,249      |
+|BERT4Rec RecBole |    0.1996    |    0.1103    |   0.0158   |   0.0079     |   11,024    |
+|BERT4Rec BERT4Rec-VAE |   0.2339 |   0.1407    |  0.0331    |   0.0188   |   21,426     |
+|BERT4Rec ber4rec_repro |  0.1891  |    0.0919    |    0.0166    |   0.0080    |    14,497     |
+|**SASRec RecTools** |     -   |   -      |     **0.0488**    |   **0.031**     |   *     |
+|**BERT4Rec RecTools** |-|  -  | -    |  - | *    |
+Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
 
 ### ML-1M Dataset results
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
@@ -36,7 +49,7 @@ Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 |BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
 |DeBERTa4Rec ber4rec_repro | - |  - | 0.290    |  0.159 | -    |
 |ALBERT4Rec ber4rec_repro | - |  - | 0.300    |  0.165 | -    |
-|**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | 535*    |
+|**SASRec RecTools** |-|  -  | -    |  **0.1778** | 535*    |
 |**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
@@ -46,7 +59,8 @@ Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 - RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
 - RecTools model params were set equal to BERT4Rec-VAE model params reported in the paper. 
 - RecTools models were trained for 200 epochs on each dataset.
-- SASRec model from Rectools was trained on softmax loss.
+- SASRec model from Rectools was trained on softmax loss to achieve fair comparison to BERT4Rec. This have shown to signtificantly improve model quality (e.g. ["gSASRec: Reducing Overconfidence in Sequential
+Recommendation Trained with Negative Sampling"](https://arxiv.org/pdf/2308.07192))
 
 # Reproduce our results:
 
