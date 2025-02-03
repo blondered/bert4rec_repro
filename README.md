@@ -33,8 +33,8 @@ Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 |BERT4Rec RecBole |    0.1996    |    0.1103    |   0.0158   |   0.0079     |   11,024    |
 |BERT4Rec BERT4Rec-VAE |   0.2339 |   0.1407    |  0.0331    |   0.0188   |   21,426     |
 |BERT4Rec ber4rec_repro |  0.1891  |    0.0919    |    0.0166    |   0.0080    |    14,497     |
-|**SASRec RecTools** |     -   |   -      |     **0.0488**    |   **0.0310**     |   *     |
-|**BERT4Rec RecTools** |-|  -  | **0.0407**    |  **0.0218** | *    |
+|**SASRec RecTools** |     -   |   -      |     **0.0461**    |   **0.0255**     |   2,677    |
+|**BERT4Rec RecTools** |-|  -  | **0.0408**    |  **0.0217** | 7,059    |
 Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
 
 ### Steam Dataset results
@@ -46,8 +46,8 @@ Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
 |BERT4Rec RecBole |    0.2325    |    0.1177  |    0.0744  |   0.0377    |   83,816   |
 |BERT4Rec BERT4Rec-VAE |   0.3520    |   0.1941    |   0.1237    |  0.0526    |    65,303     |
 |BERT4Rec ber4rec_repro |    0.3978   |   0.2219    |     0.1361   |   0.0734    |    117,651     |
-|**SASRec RecTools** |     -   |   -      |    **0.0978**   |  **0.0499**    |   98,087     |
-|**BERT4Rec RecTools** |-|  -  |   **0.0986**    |   **0.0501**   |  97,554    |
+|**SASRec RecTools** |     -   |   -      |    **0.0979**   |  **0.0502**    |   4,466     |
+|**BERT4Rec RecTools** |-|  -  |   **0.1075**    |   **0.0554**   |  6,228    |
 Reported BERT4Rec|       |       | N/A    |  N/A | N/A    |
 
 ### ML-1M Dataset results
@@ -60,10 +60,8 @@ Reported BERT4Rec|       |       | N/A    |  N/A | N/A    |
 |BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085    |
 |BERT4Rec ber4rec_repro |0.6865|  0.4602  | 0.2584    |  0.1392 | 3,679    |
 |BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
-|DeBERTa4Rec ber4rec_repro | - |  - | 0.290    |  0.159 | -    |
-|ALBERT4Rec ber4rec_repro | - |  - | 0.300    |  0.165 | -    |
-|**SASRec RecTools** |-|  -  | -    |  **0.1778** | 535*    |
-|**BERT4Rec RecTools** |-|  -  | -    |  **0.1558** | 369*    |
+|**SASRec RecTools** |-|  -  | **0.3020**    |  **0.1774** | 196    |
+|**BERT4Rec RecTools** |-|  -  | **0.2836**   |  **0.1540** | 232    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
 
