@@ -1,6 +1,6 @@
 from rectools.models import SASRecModel
 from rectools.models import BERT4RecModel
-from rectools.dataset import Dataset, ExternalIds
+from rectools.dataset import Dataset
 from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
 import typing as tp
@@ -75,7 +75,7 @@ def get_trainer(epochs, callbacks):
     )
 
 
-def leave_one_out_mask_for_users(interactions: pd.DataFrame, val_users: ExternalIds) -> np.ndarray:
+def leave_one_out_mask_for_users(interactions: pd.DataFrame, val_users) -> np.ndarray:
     rank = (
         interactions
         .sort_values(Columns.Datetime, ascending=False, kind="stable")
