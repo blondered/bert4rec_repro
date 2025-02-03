@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 from pytorch_lightning.loggers import CSVLogger
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
+from pathlib import Path
 
 from rectools.models.base import ModelConfig
 
