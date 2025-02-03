@@ -49,8 +49,7 @@ def leave_one_out_mask_for_users(interactions: pd.DataFrame, val_users) -> np.nd
 
 class RectoolsTransformer(RectoolsRecommender):
 
-    def get_trainer_with_val_loss_ckpt(self):
-        model_cls_name = self.model.__class__.__name__
+    def get_trainer_with_val_loss_ckpt(self, model_cls_name: str):
         last_epoch_ckpt = ModelCheckpoint(filename=model_cls_name + "_last_epoch_{epoch}")
         least_val_loss_ckpt = ModelCheckpoint(
             monitor=self.model.val_loss_name,
@@ -144,8 +143,10 @@ class RectoolsSASRecValidated(RectoolsTransformer):
         
         # def get_val_mask_func(interactions: pd.DataFrame):
         #     return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
+        def get_trainer():
+            return self.get_trainer_with_val_loss_ckpt("sasrec")
         
-        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=self.get_trainer_with_val_loss_ckpt, get_val_mask_func=self.get_val_mask_func_loo, **SASREC_DEFAULT_PARAMS)
+        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer, get_val_mask_func=self.get_val_mask_func_loo, **SASREC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
         super().rebuild_model()
@@ -164,7 +165,9 @@ class RectoolsSASRecValidated(RectoolsTransformer):
 
 class RectoolsBERT4RecValidated(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=self.get_trainer_with_val_loss_ckpt, get_val_mask_func=self.get_val_mask_func_loo, **BERT4REC_DEFAULT_PARAMS)
+        def get_trainer():
+            return self.get_trainer_with_val_loss_ckpt("sasbert4rec")
+        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer, get_val_mask_func=self.get_val_mask_func_loo, **BERT4REC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
         super().rebuild_model()
