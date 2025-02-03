@@ -65,7 +65,7 @@ RectoolsTransformer = RectoolsRecommender
 
 
 def get_trainer(epochs, callbacks, min_epochs: tp.Optional[int]=None):
-    is min_epochs is None:
+    if min_epochs is None:
         min_epochs = epochs
     return Trainer(
         max_epochs=epochs,
