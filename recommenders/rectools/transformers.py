@@ -167,14 +167,12 @@ class RectoolsSASRecValidated(RectoolsTransformer):
 class RectoolsBERT4RecValidated(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         def get_trainer():
-            return self.get_trainer_with_val_loss_ckpt("sasbert4rec", epochs)
+            return self.get_trainer_with_val_loss_ckpt("bert4rec", epochs)
         self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer, get_val_mask_func=self.get_val_mask_func_loo, **BERT4REC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
         super().rebuild_model()
         self.update_weights_from_ckpt(self.model.__class__.__name___ + "best_val_loss")
-
-
 
 
 class RectoolsSASRec(RectoolsTransformer):
