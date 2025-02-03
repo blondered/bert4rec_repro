@@ -49,15 +49,16 @@ def leave_one_out_mask_for_users(interactions: pd.DataFrame, val_users) -> np.nd
 
 class RectoolsTransformer(RectoolsRecommender):
 
-    def get_trainer_with_val_loss_ckpt(self, model_cls_name: str):
+    @staticmethod
+    def get_trainer_with_val_loss_ckpt(model_cls_name: str):
         last_epoch_ckpt = ModelCheckpoint(filename=model_cls_name + "_last_epoch_{epoch}")
         least_val_loss_ckpt = ModelCheckpoint(
-            monitor=self.model.val_loss_name,
+            monitor="val_loss",
             mode="min",
             filename=model_cls_name + "_best_val_loss_{epoch}-{val_loss:.2f}",
         )
         early_stopping_val_loss = EarlyStopping(
-            monitor=self.model.val_loss_name,
+            monitor="val_loss",
             mode="min",
             patience=20,
         )
