@@ -32,5 +32,5 @@ def bert4rec_val_rt():
 
 RECOMMENDERS = {
     "sasrec_val_rt": sasrec_val_rt,
-    # "bert4rec_val_rt": bert4rec_val_rt,
+    "bert4rec_val_rt": bert4rec_val_rt,
 }
