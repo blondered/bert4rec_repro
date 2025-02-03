@@ -12,6 +12,7 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 
 from rectools.models.base import ModelConfig
 
+# These are also framework default params, but let's fix them explicitly
 SASREC_DEFAULT_PARAMS = {
     "session_max_len": 100,
     "n_heads": 4,
@@ -21,6 +22,7 @@ SASREC_DEFAULT_PARAMS = {
     "loss": "softmax",
 }
 
+# These are also framework default params, but let's fix them explicitly
 BERT4REC_DEFAULT_PARAMS = {
     "session_max_len": 100,
     "n_heads": 4,
@@ -62,10 +64,12 @@ RectoolsTransformer = RectoolsRecommender
 #         return result
 
 
-def get_trainer(epochs, callbacks):
+def get_trainer(epochs, callbacks, min_epochs: tp.Optional[int]=None):
+    is min_epochs is None:
+        min_epochs = epochs
     return Trainer(
         max_epochs=epochs,
-        min_epochs=epochs,
+        min_epochs=min_epochs,
         deterministic=True,
         enable_progress_bar=True,
         enable_model_summary=True,
@@ -89,42 +93,53 @@ def leave_one_out_mask_for_users(interactions: pd.DataFrame, val_users) -> np.nd
     )
     return val_mask.values
     
-    
-    
 class RectoolsSASRecValidated(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         
         def get_trainer_sasrec():
             last_epoch_ckpt = ModelCheckpoint(filename="sasrec_last_epoch_{epoch}")
             least_val_loss_ckpt = ModelCheckpoint(
-                monitor=SASRecModel.val_loss_name,   # or just pass "val_loss" here,
+                monitor=SASRecModel.val_loss_name,
                 mode="min",
                 filename="sasrec_best_val_loss_{epoch}-{val_loss:.2f}",
             )
             early_stopping_val_loss = EarlyStopping(
-                monitor=SASRecModel.val_loss_name,   # or just pass "val_loss" here
+                monitor=SASRecModel.val_loss_name,
                 mode="min",
                 patience=20,
             )
             callbacks = [last_epoch_ckpt, least_val_loss_ckpt, early_stopping_val_loss]
-            return get_trainer(epochs, callbacks)
+            return get_trainer(epochs, callbacks, min_epochs=1)
         
         def get_val_mask_func(interactions: pd.DataFrame):
             return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
         
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, get_val_mask_func=get_val_mask_func, **SASREC_DEFAULT_PARAMS)
-
+    
+    def rebuild_model(self):
+        super().rebuild_model()
+        ckpt_dir = Path(self.model.fit_trainer.log_dir) / "checkpoints"
+        for pth in ckpt_dir.iterdir():
+            if pth.name.startswith("sasrec_best_val_loss"):
+                ckpt_path = pth
+        self.model = self.model.load_from_checkpoint(ckpt_path)
 
 
 class RectoolsSASRec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        
         def get_trainer_sasrec():
             callbacks = ModelCheckpoint(filename="sasrec_last_epoch_{epoch}")
             return get_trainer(epochs, callbacks)
-    
-        
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, **SASREC_DEFAULT_PARAMS)
+        
+
+class RectoolsBERT4Rec(RectoolsTransformer):
+    def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
+        def get_trainer_ber4rec():
+            callbacks = ModelCheckpoint(filename="bert4rec_last_epoch_{epoch}")
+            return get_trainer(epochs, callbacks)
+        self.model = BERT4RecModel(epochs=epochs, verbose=1, get_trainer_func=get_trainer_ber4rec, deterministic=True, **BERT4REC_DEFAULT_PARAMS)
+
 
 # For quick validation from saved checkpoint without re-training the model
 class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
@@ -136,6 +151,7 @@ class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
 
+# For quick validation from saved checkpoint without re-training the model
 class RectoolsBERT4RecFromCheckpoint(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         self.model = BERT4RecModel.load_from_checkpoint(self.ckpt)
@@ -144,11 +160,3 @@ class RectoolsBERT4RecFromCheckpoint(RectoolsTransformer):
         interactions["datetime"] = interactions.groupby("user_id").cumcount()
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
-        
-
-class RectoolsBERT4Rec(RectoolsTransformer):
-    def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        def get_trainer_ber4rec():
-            callbacks = ModelCheckpoint(filename="bert4rec_last_epoch_{epoch}")
-            return get_trainer(epochs, callbacks)
-        self.model = BERT4RecModel(epochs=epochs, verbose=1, get_trainer_func=get_trainer_ber4rec, deterministic=True, **BERT4REC_DEFAULT_PARAMS)
