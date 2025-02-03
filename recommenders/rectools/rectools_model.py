@@ -50,10 +50,6 @@ class RectoolsRecommender(Recommender):
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
         self.model.fit(self.dataset)
-        try:
-            self.model.save_checkpoint(self.model.__class__.__name__ + ".ckpt")
-        except AttributeError:
-            pass
 
     # recommendation_request: tuple(user_id, features)
     def recommend_batch(self, recommendation_requests, limit):
@@ -95,14 +91,6 @@ class RectoolsRecommender(Recommender):
             result[user_id] = scored_results + missing_results
 
         return result
-
-    # this works but too slow
-    # cold users are not handled (should raise but no tested)
-    # def recommend(self, user_id_external, limit, features=None):
-    #     user_reco = self.model.recommend(
-    #         users=[user_id_external],
-    #         dataset=self.dataset,
-    #         filter_viewed=self.filter_seen,
-    #         k=limit
-    #     )
-    #     return tuple(zip(user_reco["item_id"].values, user_reco["score"].values))
+    
+    def set_val_users(self, val_users):
+        self.val_users = val_users
