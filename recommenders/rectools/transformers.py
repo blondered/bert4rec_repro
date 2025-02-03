@@ -125,8 +125,8 @@ class RectoolsSASRecValidated(RectoolsTransformer):
                 ckpt_path = pth
         self.model.lightning_model = self.model.lightning_model.__class__.load_from_checkpoint(
             ckpt_path,
-            torch_model=model.torch_model,
-            data_preparator=model.data_preparator
+            torch_model=self.model.torch_model,
+            data_preparator=self.model.data_preparator
         )
 
 
