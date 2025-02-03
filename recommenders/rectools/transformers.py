@@ -2,6 +2,7 @@ from rectools.models import SASRecModel
 from rectools.models import BERT4RecModel
 from rectools.dataset import Dataset
 from .rectools_model import RectoolsRecommender
+from rectools import Columns
 from pytorch_lightning import Trainer
 import typing as tp
 import numpy as np
@@ -125,7 +126,7 @@ class RectoolsSASRec(RectoolsTransformer):
         
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, **SASREC_DEFAULT_PARAMS)
 
-
+# For quick validation from saved checkpoint without re-training the model
 class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         self.model = SASRecModel.load_from_checkpoint(self.ckpt)
