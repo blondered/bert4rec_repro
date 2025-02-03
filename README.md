@@ -8,7 +8,7 @@ RecTools models (SASRec and BERT4Rec) results were computed using this fork os t
 
 
 
-**RecTools implementations achieve highest metrics on multiple datasets out of all available implementations from the original paper.**
+**RecTools implementations achieve highest metrics on 3 out of 4 datasets out of all available implementations from the original paper.**
 
 ### ML-20M Dataset results
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
@@ -37,6 +37,19 @@ Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 |**BERT4Rec RecTools** |-|  -  | **0.0407**    |  **0.0218** | *    |
 Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
 
+### Steam Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |  0.3466  |  0.1842  |  0.0398   | 0.0207  |   162  |
+|SASRec original |  0.3744    |  0.2052   |  0.1198   |   0.0482  |  3,614  |
+|BERT4Rec original |    0.2148    |    0.1064    |  0.0737    |    0.0375   |    4,847   |
+|BERT4Rec RecBole |    0.2325    |    0.1177  |    0.0744  |   0.0377    |   83,816   |
+|BERT4Rec BERT4Rec-VAE |   0.3520    |   0.1941    |   0.1237    |  0.0526    |    65,303     |
+|BERT4Rec ber4rec_repro |    0.3978   |   0.2219    |     0.1361   |   0.0734    |    117,651     |
+|**SASRec RecTools** |     -   |   -      |    **0.0978**   |  **0.0499**    |   98,087     |
+|**BERT4Rec RecTools** |-|  -  |   **0.0986**    |   **0.0501**   |  97,554    |
+Reported BERT4Rec|       |       | N/A    |  N/A | N/A    |
+
 ### ML-1M Dataset results
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
 |--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
@@ -50,7 +63,7 @@ Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
 |DeBERTa4Rec ber4rec_repro | - |  - | 0.290    |  0.159 | -    |
 |ALBERT4Rec ber4rec_repro | - |  - | 0.300    |  0.165 | -    |
 |**SASRec RecTools** |-|  -  | -    |  **0.1778** | 535*    |
-|**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
+|**BERT4Rec RecTools** |-|  -  | -    |  **0.1558** | 369*    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
 
