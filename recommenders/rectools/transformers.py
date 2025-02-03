@@ -123,7 +123,7 @@ class RectoolsSASRecValidated(RectoolsTransformer):
         for pth in ckpt_dir.iterdir():
             if pth.name.startswith("sasrec_best_val_loss"):
                 ckpt_path = pth
-        self.model.lightning_model = model.lightning_model.__class__.load_from_checkpoint(
+        self.model.lightning_model = self.model.lightning_model.__class__.load_from_checkpoint(
             ckpt_path,
             torch_model=model.torch_model,
             data_preparator=model.data_preparator
