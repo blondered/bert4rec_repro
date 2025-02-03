@@ -142,12 +142,12 @@ class RectoolsSASRecValidated(RectoolsTransformer):
         #     callbacks = [last_epoch_ckpt, least_val_loss_ckpt, early_stopping_val_loss]
         #     return get_trainer(epochs, callbacks, min_epochs=1)
         
-        # def get_val_mask_func(interactions: pd.DataFrame):
-        #     return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
-        def get_trainer():
+        def get_val_mask_func(interactions: pd.DataFrame):
+            return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
+        def get_trainer_sasrec():
             return self.get_trainer_with_val_loss_ckpt("sasrec", epochs)
         
-        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer, get_val_mask_func=self.get_val_mask_func_loo, **SASREC_DEFAULT_PARAMS)
+        self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, get_val_mask_func=get_val_mask_func, **SASREC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
         super().rebuild_model()
