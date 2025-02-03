@@ -125,6 +125,7 @@ def get_trainer(epochs, callbacks, min_epochs: tp.Optional[int]=None):
     )
     
 class RectoolsSASRecValidated(RectoolsTransformer):
+    
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
         
         def get_trainer_sasrec():
@@ -144,14 +145,12 @@ class RectoolsSASRecValidated(RectoolsTransformer):
         
         def get_val_mask_func(interactions: pd.DataFrame):
             return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
-        # def get_trainer_sasrec():
-        #     return self.get_trainer_with_val_loss_ckpt("sasrec", epochs)
         
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, get_val_mask_func=get_val_mask_func, **SASREC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
         super().rebuild_model()
-        self.update_weights_from_ckpt(self.model.__class__.__name___ + "best_val_loss")
+        self.update_weights_from_ckpt("sasrec_best_val_loss")
         # ckpt_dir = Path(self.model.fit_trainer.log_dir) / "checkpoints"
         # for pth in ckpt_dir.iterdir():
         #     if pth.name.startswith("sasrec_best_val_loss"):
@@ -166,13 +165,31 @@ class RectoolsSASRecValidated(RectoolsTransformer):
 
 class RectoolsBERT4RecValidated(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
-        def get_trainer():
-            return self.get_trainer_with_val_loss_ckpt("bert4rec", epochs)
-        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer, get_val_mask_func=self.get_val_mask_func_loo, **BERT4REC_DEFAULT_PARAMS)
+        def get_trainer_bert():
+            last_epoch_ckpt = ModelCheckpoint(filename="bert4rec_last_epoch_{epoch}")
+            least_val_loss_ckpt = ModelCheckpoint(
+                monitor=SASRecModel.val_loss_name,
+                mode="min",
+                filename="bert4rec_best_val_loss_{epoch}-{val_loss:.2f}",
+            )
+            early_stopping_val_loss = EarlyStopping(
+                monitor=SASRecModel.val_loss_name,
+                mode="min",
+                patience=20,
+            )
+            callbacks = [last_epoch_ckpt, least_val_loss_ckpt, early_stopping_val_loss]
+            return get_trainer(epochs, callbacks, min_epochs=1)
+        
+        def get_val_mask_func(interactions: pd.DataFrame):
+            return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
+        
+        self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_bert, get_val_mask_func=get_val_mask_func, **BERT4REC_DEFAULT_PARAMS)
+    
+        # self.model = BERT4RecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer, get_val_mask_func=self.get_val_mask_func_loo, **BERT4REC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
         super().rebuild_model()
-        self.update_weights_from_ckpt(self.model.__class__.__name___ + "best_val_loss")
+        self.update_weights_from_ckpt("bert4rec_best_val_loss")
 
 
 class RectoolsSASRec(RectoolsTransformer):
