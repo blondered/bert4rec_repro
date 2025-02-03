@@ -1,6 +1,6 @@
 from rectools.models import SASRecModel
 from rectools.models import BERT4RecModel
-from rectools.dataset import Dataset
+from rectools.dataset import Dataset, ExternalIds
 from .rectools_model import RectoolsRecommender
 from pytorch_lightning import Trainer
 import typing as tp
