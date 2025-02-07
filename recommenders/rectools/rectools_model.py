@@ -22,6 +22,8 @@ class RectoolsRecommender(Recommender):
         self.filter_seen = filter_seen
         self.ckpt = ckpt
 
+        self.random_state = random_state
+
         # Enable deterministic behaviour with CUDA >= 10.2
         os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":4096:8"
 
@@ -49,6 +51,8 @@ class RectoolsRecommender(Recommender):
         interactions["datetime"] = interactions.groupby("user_id").cumcount()
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
+        # fix randomness
+        seed_everything(self.random_state, workers=True)
         self.model.fit(self.dataset)
 
     # recommendation_request: tuple(user_id, features)
@@ -69,6 +73,7 @@ class RectoolsRecommender(Recommender):
         return res
 
     def get_item_rankings(self):
+        # This is a very slow but universal method
         result = {}
         print('generating sampled predictions...')
         for request in tqdm.tqdm(self.items_ranking_requests):
