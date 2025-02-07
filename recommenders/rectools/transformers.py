@@ -26,7 +26,7 @@ SASREC_DEFAULT_PARAMS = {
     "n_blocks": 2,
     "lr": 0.001,
     "loss": "softmax",
-    "recommend_devices": [1],
+    "recommend_device": "cuda:1",
     "recommend_batch_size": 128,
 }
 
@@ -39,7 +39,7 @@ BERT4REC_DEFAULT_PARAMS = {
     "lr": 0.001,
     "loss": "softmax",
     "mask_prob": 0.15,
-    "recommend_devices": [1],
+    "recommend_device": "cuda:1",
     "recommend_batch_size": 128,
 }
 
