@@ -90,7 +90,7 @@ settings.json
 .vs/
 
 # Pytorch-lightning
-lightning_logs
+lightning_logs*
 
 # benchmarks
 benchmark_results/
