@@ -16,11 +16,11 @@ def top_recommender():
     return FilterSeenRecommender(TopRecommender())
 
 def lightfm_recommender(k, loss):
-    return FilterSeenRecommender(LightFMRecommender(k, loss))
+   return FilterSeenRecommender(LightFMRecommender(k, loss))
 
 RECOMMENDERS = {
     "top_recommender": top_recommender,
-    "MF-BPR": lambda: lightfm_recommender(30, 'bpr'),
+   "MF-BPR": lambda: lightfm_recommender(30, 'bpr'),
 }
 
 MAX_TEST_USERS=6040

@@ -3,13 +3,17 @@ import sys
 import importlib.util
 import json
 import mmh3
+from pathlib import Path
+
+
+root_directory = Path(__file__).parents[2].resolve()
+sys.path.append(str(root_directory))
 
 from aprec.utils.os_utils import shell
 from aprec.evaluation.evaluate_recommender import RecommendersEvaluator
 from aprec.datasets.datasets_register import DatasetsRegister
 
-import tensorflow as tf
-
+# import tensorflow as tf
 
 
 def config():
@@ -135,8 +139,8 @@ def write_result(config, result):
 
 
 if __name__ == "__main__":
-    physical_devices = tf.config.list_physical_devices('GPU') 
-    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    # physical_devices = tf.config.list_physical_devices('GPU') 
+    # tf.config.experimental.set_memory_growth(physical_devices[0], True)
     config = config()
     run_experiment(config)
     
