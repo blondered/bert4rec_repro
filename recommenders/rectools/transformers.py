@@ -242,7 +242,7 @@ class RectoolsSASRecRecallValidated(RectoolsTransformer):
         
         def get_val_mask_func(interactions: pd.DataFrame):
             return leave_one_out_mask_for_users(interactions, val_users = self.val_users)
-        
+
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, get_val_mask_func=get_val_mask_func, **SASREC_DEFAULT_PARAMS)
     
     def rebuild_model(self):
@@ -262,6 +262,7 @@ class RectoolsSASRec(RectoolsTransformer):
             return get_trainer(epochs, callbacks)
         self.model = SASRecModel(epochs=epochs, verbose=1, deterministic=True, get_trainer_func=get_trainer_sasrec, **SASREC_DEFAULT_PARAMS)
         
+
 # For training model without validation fold (not used in benchmarks)
 class RectoolsBERT4Rec(RectoolsTransformer):
     def _init_model(self, model_config: tp.Optional[ModelConfig], epochs:int = 1):
@@ -269,6 +270,7 @@ class RectoolsBERT4Rec(RectoolsTransformer):
             callbacks = ModelCheckpoint(filename="bert4rec_last_epoch_{epoch}")
             return get_trainer(epochs, callbacks)
         self.model = BERT4RecModel(epochs=epochs, verbose=1, get_trainer_func=get_trainer_ber4rec, deterministic=True, **BERT4REC_DEFAULT_PARAMS)
+
 
 # For quick validation from saved checkpoint without re-training the model (not used in benchmarks)
 class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
@@ -280,6 +282,7 @@ class RectoolsSASRecFromCheckpoint(RectoolsTransformer):
         interactions["datetime"] = interactions.groupby("user_id").cumcount()
         interactions["weight"] = 1
         self.dataset = Dataset.construct(interactions)
+
 
 # For quick validation from saved checkpoint without re-training the model (not used in benchmarks)
 class RectoolsBERT4RecFromCheckpoint(RectoolsTransformer):

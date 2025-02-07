@@ -21,6 +21,7 @@ class RectoolsRecommender(Recommender):
         self.interactions = []
         self.filter_seen = filter_seen
         self.ckpt = ckpt
+
         self.random_state = random_state
 
         # Enable deterministic behaviour with CUDA >= 10.2
