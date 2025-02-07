@@ -1,5 +1,5 @@
 from aprec.evaluation.split_actions import LeaveOneOut
-from aprec.recommenders.rectools.transformers import RectoolsSASRecValidated, RectoolsBERT4RecValidated
+from aprec.recommenders.rectools.transformers import RectoolsBERT4RecRecallValidated, RectoolsSASRecRecallValidated
 from aprec.evaluation.metrics.mrr import MRR
 from aprec.evaluation.metrics.ndcg import NDCG
 from aprec.evaluation.metrics.recall import Recall
@@ -22,14 +22,13 @@ TARGET_ITEMS_SAMPLER = PopTargetItemsSampler(101)
 
 EPOCHS = 200
 
-def sasrec_val_rt():
-    return RectoolsSASRecValidated(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
+def bert4rec_recall_val_rt():
+    return RectoolsBERT4RecRecallValidated(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
 
-def bert4rec_val_rt():
-    return RectoolsBERT4RecValidated(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
+def sasrec_recall_val_rt():
+    return RectoolsSASRecRecallValidated(filter_seen=FILTER_SEEN, random_state=RANDOM_STATE, epochs=EPOCHS)
 
 RECOMMENDERS = {
-    # "sasrec_val_rt": sasrec_val_rt,
-    "bert4rec_val_rt": bert4rec_val_rt,
+    "sasrec_recall_val_rt": sasrec_recall_val_rt,
+    "bert4rec_recall_val_rt": bert4rec_recall_val_rt,
 }
-
