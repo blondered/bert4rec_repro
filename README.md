@@ -1,16 +1,24 @@
 <i>This benchmark is still in progress:
-- We keep running experiments on different datasets
-- We still prepare RecTools models for release in the framework (documentaion, tests and tutorials are not yet finished)</i>
+- We still prepare RecTools models for release in the framework</i>
 
 # [RecTools](https://github.com/MobileTeleSystems/RecTools) transformers benchmark results
 
 RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro). Results for other implementations were taken from the original paper [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
 
 
+When only BERT models are compared:
+- **RecTools BERT4Rec** achieves highest metrics on 2 out of 4 datasets
+- BERT4Rec-VAE achieves highest metrics on 1 dataset
+- ber4rec_repro (based on Hugging Face Transformers) achieves highest metrics on 1 dataset
 
-**RecTools implementations achieve highest metrics on both datasets out of all available implementations from the original paper.**
+When RecTools SASRec with softmax loss is also compared:
+- **RecTools SASRec** achieves highest metrics on 3 out of 4 datasets
+
+*Note that other SASRec impementations with softmax loss were not present in this benchmark*
+
 
 ### ML-20M Dataset results
+
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
 |--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
 |MF-BPR          |0.6126|  0.3424  | 0.0807    |  0.0407 | 197    |
@@ -20,9 +28,36 @@ RecTools models (SASRec and BERT4Rec) results were computed using this fork os t
 |BERT4Rec BERT4Rec-VAE |0.7409|  0.5259  | 0.2886    |  0.1732 | 23,030    |
 |BERT4Rec ber4rec_repro |0.7127|  0.4805  | 0.2393    |  0.1310 | 44,610    |
 |BERT4Rec ber4rec_repro (longer seq) |0.7268|  0.4980  | 0.2514    |  0.1456 | 39,632    |
-|**SASRec RecTools** | <u>0.7562</u> |  <u>0.5422</u>   | <u>0.2994</u>   |  <u>0.1834</u> | *    |
-|**BERT4Rec RecTools** |-|  -  | -    |  - | *    |
+|**SASRec RecTools** | **0.7532** |  **0.5395**   | **0.2990**   |  **0.1818** | 23,948    |
+|**BERT4Rec RecTools** |**0.70708**|  **0.4860**  | **0.2400**    |  **0.1396** | 29,403    |
 Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
+
+### Beauty Dataset results
+
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |   0.2090 |  0.1089  |  0.0185   | 0.0090  |  58   |
+|SASRec original |   0.1111   | 0.0524  |  0.0079 |  0.0036 |  316   |
+|BERT4Rec original |  0.1099    |  0.0567  |   0.0163   |    0.0079   |  3,249      |
+|BERT4Rec RecBole |    0.1996    |    0.1103    |   0.0158   |   0.0079     |   11,024    |
+|BERT4Rec BERT4Rec-VAE |   0.2339 |   0.1407    |  0.0331    |   0.0188   |   21,426   |
+|BERT4Rec ber4rec_repro |  0.1891  |    0.0919    |    0.0166    |   0.0080    |    14,497     |
+|**SASRec RecTools** |     **0.3062**   |   **0.2012**      |     **0.0595**    |   **0.0359**     |   8,702    |
+|**BERT4Rec RecTools** | **0.2506** |  **0.1555**  | **0.0434**    |  **0.0242** | 15,786   |
+Reported BERT4Rec|    0.3025   |     0.1862  | N/A    |  N/A | N/A    |
+
+### Steam Dataset results
+|Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
+|--------------------------|--------------------------------|---------------------------------|-----------|---------|----------------|
+|MF-BPR          |  0.3466  |  0.1842  |  0.0398   | 0.0207  |   162  |
+|SASRec original |  0.3744    |  0.2052   |  0.1198   |   0.0482  |  3,614  |
+|BERT4Rec original |    0.2148    |    0.1064    |  0.0737    |    0.0375   |    4,847   |
+|BERT4Rec RecBole |    0.2325    |    0.1177  |    0.0744  |   0.0377    |   83,816   |
+|BERT4Rec BERT4Rec-VAE |   0.3520    |   0.1941    |   0.1237    |  0.0526    |    65,303   |
+|BERT4Rec ber4rec_repro |    0.3978   |   0.2219    |     0.1361   |   0.0734    |    117,651     |
+|**SASRec RecTools** |     **0.2726**   |   **0.1381**     |    **0.0974**   |  **0.0494**    |   53,584     |
+|**BERT4Rec RecTools** | **0.2856** |  **0.1485**  |   **0.1010**    |   **0.0518**   |  53,293    |
+Reported BERT4Rec|    0.4013   |    0.2261   | N/A    |  N/A | N/A    |
 
 ### ML-1M Dataset results
 |Model       |Pop-sampled Recall@10|Pop-sampled NDCG@10| Recall@10| NDCG@10| Training time  |
@@ -31,22 +66,22 @@ Reported BERT4Rec|0.7473|  0.5340  | N/A    |  N/A | N/A    |
 |SASRec original |0.6370|  0.4033 | 0.1993    |  0.1078 | 316    |
 |BERT4Rec original |0.5215|  0.3042  | 0.1518    |  0.0806 | 2,665    |
 |BERT4Rec RecBole |0.4562|  0.2589  | 0.1061    |  0.0546 | 20,499    |
-|BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085    |
+|BERT4Rec BERT4Rec-VAE |0.6698|  0.4533  | 0.2394    |  0.1314 | 1,085  |
 |BERT4Rec ber4rec_repro |0.6865|  0.4602  | 0.2584    |  0.1392 | 3,679    |
 |BERT4Rec ber4rec_repro (longer seq) |0.6975|  0.4751  | 0.2821    |  0.1516 | 2,889    |
-|DeBERTa4Rec ber4rec_repro | - |  - | 0.290    |  0.159 | -    |
-|ALBERT4Rec ber4rec_repro | - |  - | 0.300    |  0.165 | -    |
-|**SASRec RecTools** |-|  -  | -    |  <u>0.1778</u> | 535*    |
-|**BERT4Rec RecTools** |-|  -  | -    |  0.1558 | 369*    |
+|**SASRec RecTools** | **0.7041** | **0.4951**  | **0.3058**    |  **0.1779** | 630    |
+|**BERT4Rec RecTools** | **0.7151** |  **0.5020**  | **0.2921**   |  **0.1618** | 602    |
 Reported BERT4Rec|0.6970|  0.4818  | N/A    |  N/A | N/A    |
 
 
 ### Notes
-- To assure same settings with the paper experiments with RecTools models were run together with BERT4Rec-VAE model from published paper. We achieved the same metric results for this model as were reported in the original paper.
+- To assure same settings with the paper experiments with RecTools models were run together with BERT4Rec-VAE model from published paper. We achieved almost the same metric results for this model as were reported in the original paper.
 - RecTools models training time was computed relative to BERT4Rec-VAE training time during simultaneous experiments on our hardware. To make that our model training time is comparable to those reported in the paper, we compute it as a product of reported BERT4Rec-VAE trainig time and our model relative difference which was obtained during actual experiments.
-- RecTools model params were set equal to BERT4Rec-VAE model params reported in the paper. 
-- RecTools models were trained for 200 epochs on each dataset.
-- SASRec model from Rectools was trained on softmax loss.
+- RecTools default model params are equal to BERT4Rec-VAE model params reported in the paper.
+- RecTools models were trained using validation scheme reported in the paper: given that test interactions were already held out, for 2048 randomly selected users last interaction was used as a validation target. All other interactions for all users are used for training.
+- RecTools models were trained for a maximum of 200 epochs on each dataset. Early stopping on validation recall has been applied with patience = 50 epochs. Best validation recall model state was used for predictions. All other models were trained for 200+ epochs. "ber4rec repro" models were trained with patience = 200 epochs. Best model selection based on validation loss or accuracy was also applied.
+- Rectools SASRec model was trained on softmax loss to achieve fair comparison to BERT4Rec models. Sotmax loss has shown to signtificantly improve model quality (e.g. ["gSASRec: Reducing Overconfidence in Sequential
+Recommendation Trained with Negative Sampling"](https://arxiv.org/pdf/2308.07192))
 
 # Reproduce our results:
 
@@ -86,8 +121,8 @@ pip install -r requirements.txt
 If you did clone RecTools repository, install it in virtual environment:
 ```
 cd ../RecTools
-git checkout feature/checkpoints  # or whatever branch you need
-pip install -e RecTools
+git checkout experimental/sasrec  # or whatever branch you need
+pip install -e .
 cd ../aprec
 ```
 
@@ -107,8 +142,13 @@ sh run_n_experiments.sh configs/rectools/ml_1m.py
 ```
 sh run_n_experiments.sh configs/rectools/ml_20m.py
 ```
-
-Each experiemnt result you can find in the directory: `aprec/evaluation/results/<experiment_id>/experiment_.json`
+```
+sh run_n_experiments.sh configs/rectools/beauty.py
+```
+```
+sh run_n_experiments.sh configs/rectools/steam.py
+```
+Each experiment result you can find in the directory: `aprec/evaluation/results/<experiment_id>/experiment_.json`
 
 
 
