@@ -1,6 +1,3 @@
-<i>This benchmark is still in progress:
-- We still prepare RecTools models for release in the framework</i>
-
 # [RecTools](https://github.com/MobileTeleSystems/RecTools) transformers benchmark results
 
 RecTools models (SASRec and BERT4Rec) results were computed using this fork os the [original repository](https://github.com/asash/bert4rec_repro). Results for other implementations were taken from the original paper [A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation](https://arxiv.org/abs/2207.07483)
